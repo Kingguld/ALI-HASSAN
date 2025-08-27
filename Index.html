@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All in One Tools - Your Daily Tools, All in One Place</title>
+    <meta name="description" content="Convert, calculate, compress, and simplify your everyday tasks with our free online tools. Video converters, image editors, text tools, and more.">
+    <meta name="keywords" content="online tools, video converter, image editor, text tools, calculator, file converter, free tools">
+    <meta name="author" content="Ali Hassan">
+    <link rel="canonical" href="https://allinonetools.com">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="All in One Tools - Your Daily Tools, All in One Place">
+    <meta property="og:description" content="Convert, calculate, compress, and simplify your everyday tasks with our free online tools.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://allinonetools.com">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="All in One Tools">
+    <meta name="twitter:description" content="Your Daily Tools, All in One Place">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "All in One Tools",
+        "url": "https://allinonetools.com",
+        "description": "Convert, calculate, compress, and simplify your everyday tasks with our free online tools.",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://allinonetools.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#1E40AF',
+                        accent: '#60A5FA'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .tool-card {
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .search-focus:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ad-container {
+            min-height: 250px;
+            background: #f8fafc;
+            border: 2px dashed #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-gray-900">ALI HASSAN</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-primary font-medium transition-colors">Home</a>
+                    <a href="#tools" class="text-gray-700 hover:text-primary font-medium transition-colors">Tools</a>
+                    <a href="#contact" class="text-gray-700 hover:text-primary font-medium transition-colors">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-primary">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="block px-3 py-2 text-gray-700 hover:text-primary">Home</a>
+                <a href="#tools" class="block px-3 py-2 text-gray-700 hover:text-primary">Tools</a>
+                <a href="#contact" class="block px-3 py-2 text-gray-700 hover:text-primary">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="fade-in">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6">Your Daily Tools, All in One Place</h2>
+                <p class="text-xl md:text-2xl mb-8 text-blue-100">Convert, calculate, compress, and simplify your everyday tasks — fast and free.</p>
+                <button onclick="document.getElementById('search-bar').focus()" class="bg-white text-primary px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
+                    Explore Tools
+                </button>
+            </div>
+            
+            <!-- Tool Icons Illustration -->
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
+                <div class="text-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-4 mb-2 mx-auto w-16 h-16 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <p class="text-sm">Image</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-4 mb-2 mx-auto w-16 h-16 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
+                        </svg>
+                    </div>
+                    <p class="text-sm">Video</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-4 mb-2 mx-auto w-16 h-16 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <p class="text-sm">Text</p>
+                </div>
+                <div class="text-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-4 mb-2 mx-auto w-16 h-16 flex items-center justify-center">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <p class="text-sm">Code</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Bar Section -->
+    <section class="py-12 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative">
+                <input 
+                    type="text" 
+                    id="search-bar"
+                    placeholder="Search a tool..." 
+                    class="w-full px-6 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-primary focus:outline-none search-focus transition-colors"
+                    oninput="filterTools(this.value)"
+                >
+                <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AdSense Ad Space -->
+    <section class="py-8 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="ad-container">
+                <!-- Replace with your AdSense code -->
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX"
+                     crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                <p class="text-gray-500 text-sm">Advertisement Space - Replace with your AdSense Ad Unit ID</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Video Tools -->
+            <div class="tool-section mb-16">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">🎥 Video Tools</h3>
+                    <p class="text-lg text-gray-600">Professional video editing and conversion tools</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="video to text converter">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Video to Text</h4>
+                        <p class="text-gray-600 mb-4">Extract text and subtitles from video files automatically</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="watermark remover">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" clip-rule="evenodd"></path>
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V5zM8 8a1 1 0 012 0v3a1 1 0 11-2 0V8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Watermark Remover</h4>
+                        <p class="text-gray-600 mb-4">Remove watermarks from videos quickly and easily</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="text to video generator">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Text to Video</h4>
+                        <p class="text-gray-600 mb-4">Create engaging videos from text content automatically</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="video compressor">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Video Compressor</h4>
+                        <p class="text-gray-600 mb-4">Reduce video file size without losing quality</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="video format converter">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Video Converter</h4>
+                        <p class="text-gray-600 mb-4">Convert videos between different formats (MP4, AVI, MOV)</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="video editor online">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Video Editor</h4>
+                        <p class="text-gray-600 mb-4">Edit videos online with trim, cut, and merge features</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Tools -->
+            <div class="tool-section mb-16">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">🖼️ Image Tools</h3>
+                    <p class="text-lg text-gray-600">Powerful image editing and optimization tools</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="image compressor">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Image Compressor</h4>
+                        <p class="text-gray-600 mb-4">Reduce image file size while maintaining quality</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="background remover">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Background Remover</h4>
+                        <p class="text-gray-600 mb-4">Remove backgrounds from images automatically</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="image format converter">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Image Converter</h4>
+                        <p class="text-gray-600 mb-4">Convert images between formats (JPG, PNG, WebP, GIF)</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Tools -->
+            <div class="tool-section mb-16">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">📝 Text Tools</h3>
+                    <p class="text-lg text-gray-600">Essential text processing and formatting utilities</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="word counter">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Word Counter</h4>
+                        <p class="text-gray-600 mb-4">Count words, characters, and paragraphs in text</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="text case converter">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Case Converter</h4>
+                        <p class="text-gray-600 mb-4">Convert text to uppercase, lowercase, title case</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="text formatter">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Text Formatter</h4>
+                        <p class="text-gray-600 mb-4">Format and clean up text with various options</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator Tools -->
+            <div class="tool-section mb-16">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl font-bold text-gray-900 mb-4">🧮 Calculator Tools</h3>
+                    <p class="text-lg text-gray-600">Mathematical and financial calculation tools</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="percentage calculator">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 5a1 1 0 000 2h.01a1 1 0 100-2H7zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-3a1 1 0 011 1v4.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 111.414-1.414L11 10.586V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Percentage Calculator</h4>
+                        <p class="text-gray-600 mb-4">Calculate percentages, discounts, and increases</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="bmi calculator">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">BMI Calculator</h4>
+                        <p class="text-gray-600 mb-4">Calculate Body Mass Index and health status</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                    
+                    <div class="tool-card bg-white rounded-xl shadow-lg p-6 border border-gray-100" data-tool="loan calculator">
+                        <div class="text-primary mb-4">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zM14 6a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h10z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2">Loan Calculator</h4>
+                        <p class="text-gray-600 mb-4">Calculate loan payments and interest rates</p>
+                        <a href="#" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors">Use Tool</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h3>
+            <p class="text-lg text-gray-600 mb-8">Have questions or suggestions? We'd love to hear from you!</p>
+            <a href="mailto:allinonetools15@gmail.com" class="inline-flex items-center bg-primary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-secondary transition-colors">
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                </svg>
+                allinonetools15@gmail.com
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">All in One Tools</h4>
+                    <p class="text-gray-400">Your daily tools, all in one place. Convert, calculate, compress, and simplify your everyday tasks.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Quick Links</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#tools" class="hover:text-white transition-colors">Tools</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Popular Tools</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Video Converter</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Image Compressor</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Word Counter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 All in One Tools by Ali Hassan. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Search functionality
+        function filterTools(searchTerm) {
+            const toolCards = document.querySelectorAll('.tool-card');
+            const searchLower = searchTerm.toLowerCase();
+            
+            toolCards.forEach(card => {
+                const toolName = card.getAttribute('data-tool').toLowerCase();
+                const toolTitle = card.querySelector('h4').textContent.toLowerCase();
+                const toolDescription = card.querySelector('p').textContent.toLowerCase();
+                
+                if (toolName.includes(searchLower) || 
+                    toolTitle.includes(searchLower) || 
+                    toolDescription.includes(searchLower)) {
+                    card.style.display = 'block';
+                    card.parentElement.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Hide empty sections
+            document.querySelectorAll('.tool-section').forEach(section => {
+                const visibleCards = section.querySelectorAll('.tool-card[style*="display: block"], .tool-card:not([style*="display: none"])');
+                if (visibleCards.length === 0 && searchTerm.trim() !== '') {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.tool-card, .tool-section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'975aad54a12fa41c',t:'MTc1NjI4ODM1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
