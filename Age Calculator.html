@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Age Calculator | Multi-Tool Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #dfe6e9;
+            --background: linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%);
+            --card-bg: rgba(45, 52, 54, 0.8);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        body {
+            background: var(--background);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .tool-container {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .tool-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .input-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            color: var(--light);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        
+        .result-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .result-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .result-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .result-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(253, 121, 168, 0.5);
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .additional-info {
+            margin-top: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .additional-info h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-item i {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+        
+        .info-text {
+            font-size: 0.9rem;
+        }
+        
+        .info-text span {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .update-note {
+            text-align: center;
+            margin-top: 15px;
+            font-style: italic;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .ad-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 20px 0;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .ad-placeholder {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        footer {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transform: translateX(100vw);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .history-container {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="ad-container">
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i> Google AdSense Upper Banner Ad
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> Premium Age Calculator</h1>
+            <p>Discover your exact age in years, months, weeks, days, and more with our advanced calculator</p>
+        </header>
+        
+        <div class="tool-container">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="birthdate"><i class="fas fa-calendar-day"></i> Select Your Birthdate:</label>
+                    <input type="date" id="birthdate">
+                </div>
+                
+                <div class="input-group">
+                    <label for="compare-date"><i class="fas fa-calendar-alt"></i> Compare to Date (Optional):</label>
+                    <input type="date" id="compare-date">
+                </div>
+                
+                <button class="calculate-btn" id="calculate">
+                    <i class="fas fa-calculator"></i> Calculate My Age
+                </button>
+                
+                <div class="history-container" id="history">
+                    <h3><i class="fas fa-history"></i> Recent Calculations</h3>
+                    <div id="history-list"></div>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <div class="result-container">
+                    <div class="result-grid">
+                        <div class="result-box">
+                            <div class="result-label">Years</div>
+                            <div class="result-value" id="years">--</div>
+                        </div>
+                        
+                        <div class="result-box">
+                            <div class="result-label">Months</div>
+                            <div class="result-value" id="months">--</div>
+                        </div>
+                        
+                        <div class="result-box">
+                            <div class="result-label">Days</div>
+                            <div class="result-value" id="days">--</div>
+                        </div>
+                    </div>
+                    
+                    <div class="additional-info">
+                        <h3><i class="fas fa-info-circle"></i> Additional Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <div class="info-text">Total months: <span id="total-months">--</span></div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar-week"></i>
+                                <div class="info-text">Total weeks: <span id="total-weeks">--</span></div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-sun"></i>
+                                <div class="info-text">Total days: <span id="total-days">--</span></div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-hourglass-half"></i>
+                                <div class="info-text">Next birthday: <span id="next-birthday">--</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="ad-container">
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i> Google AdSense Middle Rectangle Ad
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 Multi-Tool Website. All Rights Reserved.</p>
+        <div class="footer-links">
+            <a href="privacy-policy.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a>
+            <a href="#"><i class="fas fa-info-circle"></i> About</a>
+            <a href="#"><i class="fas fa-terminal"></i> Other Tools</a>
+        </div>
+    </footer>
+    
+    <div class="ad-container">
+        <div class="ad-placeholder">
+            <i class="fas fa-ad"></i> Google AdSense Lower Banner Ad
+        </div>
+    </div>
+
+    <div class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> Age calculated successfully!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const birthdateInput = document.getElementById('birthdate');
+            const compareDateInput = document.getElementById('compare-date');
+            const calculateBtn = document.getElementById('calculate');
+            const yearsEl = document.getElementById('years');
+            const monthsEl = document.getElementById('months');
+            const daysEl = document.getElementById('days');
+            const totalMonthsEl = document.getElementById('total-months');
+            const totalWeeksEl = document.getElementById('total-weeks');
+            const totalDaysEl = document.getElementById('total-days');
+            const nextBirthdayEl = document.getElementById('next-birthday');
+            const themeToggle = document.getElementById('theme-toggle');
+            const notification = document.getElementById('notification');
+            const historyList = document.getElementById('history-list');
+            
+            // Set max date to today for both inputs
+            const today = new Date();
+            const maxDate = today.toISOString().split('T')[0];
+            birthdateInput.setAttribute('max', maxDate);
+            compareDateInput.setAttribute('max', maxDate);
+            compareDateInput.value = maxDate;
+            
+            // Load history from localStorage
+            loadHistory();
+            
+            calculateBtn.addEventListener('click', calculateAge);
+            
+            function calculateAge() {
+                const birthdate = new Date(birthdateInput.value);
+                let compareDate = new Date(compareDateInput.value);
+                
+                if (!birthdateInput.value) {
+                    showNotification('Please select your birthdate');
+                    return;
+                }
+                
+                if (birthdate > compareDate) {
+                    showNotification("Birthdate cannot be in the future of the compare date");
+                    return;
+                }
+                
+                let years = compareDate.getFullYear() - birthdate.getFullYear();
+                let months = compareDate.getMonth() - birthdate.getMonth();
+                let days = compareDate.getDate() - birthdate.getDate();
+                
+                if (days < 0) {
+                    months--;
+                    // Get the number of days in the previous month
+                    const lastMonth = new Date(compareDate.getFullYear(), compareDate.getMonth(), 0);
+                    days += lastMonth.getDate();
+                }
+                
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+                
+                // Calculate total values
+                const totalDays = Math.floor((compareDate - birthdate) / (1000 * 60 * 60 * 24));
+                const totalWeeks = Math.floor(totalDays / 7);
+                const totalMonths = years * 12 + months;
+                
+                // Calculate next birthday
+                const nextBirthday = new Date(compareDate.getFullYear(), birthdate.getMonth(), birthdate.getDate());
+                if (nextBirthday < compareDate) {
+                    nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
+                }
+                const daysUntilNextBirthday = Math.ceil((nextBirthday - compareDate) / (1000 * 60 * 60 * 24));
+                
+                // Update UI
+                animateValue(yearsEl, parseInt(yearsEl.innerText) || 0, years, 800);
+                animateValue(monthsEl, parseInt(monthsEl.innerText) || 0, months, 800);
+                animateValue(daysEl, parseInt(daysEl.innerText) || 0, days, 800);
+                animateValue(totalMonthsEl, parseInt(totalMonthsEl.innerText) || 0, totalMonths, 800);
+                animateValue(totalWeeksEl, parseInt(totalWeeksEl.innerText) || 0, totalWeeks, 800);
+                animateValue(totalDaysEl, parseInt(totalDaysEl.innerText) || 0, totalDays, 800);
+                
+                nextBirthdayEl.innerText = `${daysUntilNextBirthday} days`;
+                
+                // Add to history
+                addToHistory(birthdateInput.value, compareDateInput.value, years, months, days);
+                
+                showNotification('Age calculated successfully!');
+            }
+            
+            function animateValue(element, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    element.innerHTML = Math.floor(progress * (end - start) + start);
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+            
+            function showNotification(message) {
+                notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+            
+            function addToHistory(birthdate, compareDate, years, months, days) {
+                // Get existing history or initialize empty array
+                const history = JSON.parse(localStorage.getItem('ageHistory')) || [];
+                
+                // Add new calculation to beginning of array
+                history.unshift({
+                    birthdate,
+                    compareDate,
+                    years,
+                    months,
+                    days,
+                    timestamp: new Date().toISOString()
+                });
+                
+                // Keep only last 5 calculations
+                if (history.length > 5) {
+                    history.pop();
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('ageHistory', JSON.stringify(history));
+                
+                // Update UI
+                loadHistory();
+            }
+            
+            function loadHistory() {
+                const history = JSON.parse(localStorage.getItem('ageHistory')) || [];
+                historyList.innerHTML = '';
+                
+                if (history.length === 0) {
+                    historyList.innerHTML = '<p>No recent calculations</p>';
+                    return;
+                }
+                
+                history.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    const birthdate = new Date(item.birthdate).toLocaleDateString();
+                    const compareDate = new Date(item.compareDate).toLocaleDateString();
+                    
+                    historyItem.innerHTML = `
+                        <div>${birthdate}</div>
+                        <div>${item.years}y ${item.months}m ${item.days}d</div>
+                    `;
+                    
+                    historyList.appendChild(historyItem);
+                });
+            }
+            
+            // Theme toggle functionality
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('light-theme');
+                
+                if (document.body.classList.contains('light-theme')) {
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    // Change CSS variables to light theme
+                    document.documentElement.style.setProperty('--primary', '#6c5ce7');
+                    document.documentElement.style.setProperty('--secondary', '#636e72');
+                    document.documentElement.style.setProperty('--accent', '#e84393');
+                    document.documentElement.style.setProperty('--dark', '#f5f6fa');
+                    document.documentElement.style.setProperty('--light', '#2d3436');
+                    document.documentElement.style.setProperty('--background', 'linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%)');
+                    document.documentElement.style.setProperty('--card-bg', 'rgba(255, 255, 255, 0.8)');
+                    document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(0, 0, 0, 0.1)');
+                } else {
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    // Revert to dark theme
+                    document.documentElement.style.setProperty('--primary', '#6c5ce7');
+                    document.documentElement.style.setProperty('--secondary', '#a29bfe');
+                    document.documentElement.style.setProperty('--accent', '#fd79a8');
+                    document.documentElement.style.setProperty('--dark', '#2d3436');
+                    document.documentElement.style.setProperty('--light', '#dfe6e9');
+                    document.documentElement.style.setProperty('--background', 'linear-gradient(135deg, #2d3436 0%, #1a1a1a 100%)');
+                    document.documentElement.style.setProperty('--card-bg', 'rgba(45, 52, 54, 0.8)');
+                    document.documentElement.style.setProperty('--shadow', '0 10px 30px rgba(0, 0, 0, 0.3)');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
