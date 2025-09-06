@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free HTML Minifier Tool - Remove unnecessary spaces, line breaks, and comments from your HTML code to optimize website performance.">
+    <title>HTML Minifier Tool - All in One Tools</title>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-your-publisher-id" crossorigin="anonymous"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #8b5cf6;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --error: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --border: #334155;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(30, 41, 59, 0.8);
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav ul li a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+        }
+        
+        .btn-login {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-signup {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-login:hover, .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.4);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        /* Tool Header */
+        .tool-header {
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .tool-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tool-header p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Tool Container */
+        .tool-container {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+        }
+        
+        .code-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .code-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .code-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .code-section label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .code-section label span {
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .code-textarea {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: 'Fira Code', monospace;
+            resize: vertical;
+            min-height: 300px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .code-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+        
+        .tool-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 12px 24px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--surface-light);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            font-weight: 600;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+            color: white;
+            padding: 12px 24px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-primary:hover, .btn-secondary:hover, .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        /* AdSense Banner */
+        .ad-container {
+            margin: 2.5rem auto;
+            text-align: center;
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .ad-label {
+            display: block;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--surface);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+        
+        .footer-column p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .footer-column ul li a::before {
+            content: '→';
+            margin-right: 8px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover::before {
+            opacity: 1;
+            margin-right: 12px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--surface);
+                padding: 6rem 2rem 2rem;
+                transition: right 0.3s ease;
+                z-index: 99;
+                box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .mobile-auth {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+            
+            .tool-header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--surface);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border-left: 4px solid var(--success);
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .toast.error {
+            border-left-color: var(--error);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    All in One Tools
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+                <nav id="main-nav">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#tools">Tools</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                    <div class="mobile-auth">
+                        <button class="btn btn-login">Login</button>
+                        <button class="btn btn-signup">Sign Up</button>
+                    </div>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-login">Login</button>
+                    <button class="btn btn-signup">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Tool Header -->
+        <section class="tool-header">
+            <h1>HTML Minifier Tool</h1>
+            <p>Remove unnecessary spaces, line breaks, and comments from your HTML code to optimize website performance</p>
+        </section>
+
+        <!-- Upper AdSense Banner -->
+        <div class="ad-container">
+            <span class="ad-label">Advertisement</span>
+            <!-- AdSense Code Here -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-your-publisher-id"
+                 data-ad-slot="upper-banner"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- Tool Container -->
+        <section class="tool-container">
+            <div class="code-container">
+                <div class="code-section">
+                    <label for="inputCode">Original HTML <span>(Paste your code here)</span></label>
+                    <textarea id="inputCode" class="code-textarea" placeholder="Paste your HTML code here..."></textarea>
+                </div>
+                <div class="code-section">
+                    <label for="outputCode">Minified HTML <span>(Result)</span></label>
+                    <textarea id="outputCode" class="code-textarea" placeholder="Minified HTML will appear here..." readonly></textarea>
+                </div>
+            </div>
+            
+            <div class="tool-actions">
+                <button id="minifyBtn" class="btn btn-primary">Minify HTML</button>
+                <button id="clearBtn" class="btn btn-secondary">Clear</button>
+                <button id="copyBtn" class="btn btn-success">Copy Output</button>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span id="originalSize" class="stat-value">0</span>
+                    <span class="stat-label">Original Size (bytes)</span>
+                </div>
+                <div class="stat-item">
+                    <span id="minifiedSize" class="stat-value">0</span>
+                    <span class="stat-label">Minified Size (bytes)</span>
+                </div>
+                <div class="stat-item">
+                    <span id="savings" class="stat-value">0</span>
+                    <span class="stat-label">Savings (bytes)</span>
+                </div>
+                <div class="stat-item">
+                    <span id="savingsPercent" class="stat-value">0%</span>
+                    <span class="stat-label">Reduction</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Middle AdSense Banner -->
+        <div class="ad-container">
+            <span class="ad-label">Advertisement</span>
+            <!-- AdSense Code Here -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-your-publisher-id"
+                 data-ad-slot="middle-banner"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+
+        <!-- How to Use Section -->
+        <section class="tool-container">
+            <h2>How to Use the HTML Minifier Tool</h2>
+            <ol style="padding-left: 1.5rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <li>Paste your HTML code into the "Original HTML" textarea</li>
+                <li>Click the "Minify HTML" button to compress your code</li>
+                <li>Review the minified result in the "Minified HTML" textarea</li>
+                <li>Use the "Copy Output" button to copy the minified code to your clipboard</li>
+                <li>Use "Clear" to reset both text areas if needed</li>
+            </ol>
+            
+            <h2 style="margin-top: 2rem;">Why Minify HTML?</h2>
+            <ul style="padding-left: 1.5rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                <li><strong>Faster Loading Times:</strong> Reduced file size means quicker downloads</li>
+                <li><strong>Bandwidth Savings:</strong> Less data transfer for you and your users</li>
+                <li><strong>Improved SEO:</strong> Page speed is a ranking factor for search engines</li>
+                <li><strong>Better User Experience:</strong> Faster pages keep users engaged</li>
+            </ul>
+        </section>
+
+        <!-- Lower AdSense Banner -->
+        <div class="ad-container">
+            <span class="ad-label">Advertisement</span>
+            <!-- AdSense Code Here -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-your-publisher-id"
+                 data-ad-slot="lower-banner"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>All in One Tools</h3>
+                    <p>Simplifying your digital life with our comprehensive suite of online utilities.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p>Email: allinonetools15@gmail.com</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#tools">Tools</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 All in One Tools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+            
+            // Change icon based on menu state
+            if (document.getElementById('main-nav').classList.contains('active')) {
+                this.innerHTML = '✕';
+            } else {
+                this.innerHTML = '☰';
+            }
+        });
+
+        // DOM Elements
+        const inputCode = document.getElementById('inputCode');
+        const outputCode = document.getElementById('outputCode');
+        const minifyBtn = document.getElementById('minifyBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const originalSize = document.getElementById('originalSize');
+        const minifiedSize = document.getElementById('minifiedSize');
+        const savings = document.getElementById('savings');
+        const savingsPercent = document.getElementById('savingsPercent');
+        const toast = document.getElementById('toast');
+
+        // Show toast notification
+        function showToast(message, isError = false) {
+            toast.textContent = message;
+            toast.classList.remove('error');
+            if (isError) toast.classList.add('error');
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Minify HTML function
+        function minifyHTML(html) {
+            return html
+                // Remove comments
+                .replace(/<!--(?!\[if.*?\])(?!\[endif.*?\]).*?-->/gs, '')
+                // Remove whitespace between tags
+                .replace(/>\s+</g, '><')
+                // Remove multiple spaces
+                .replace(/\s+/g, ' ')
+                // Trim spaces around attributes
+                .replace(/\s*=\s*/g, '=')
+                // Remove spaces in empty tags
+                .replace(/\s+>/g, '>')
+                // Trim the entire string
+                .trim();
+        }
+
+        // Update stats
+        function updateStats(original, minified) {
+            const originalBytes = new Blob([original]).size;
+            const minifiedBytes = new Blob([minified]).size;
+            const savedBytes = originalBytes - minifiedBytes;
+            const savedPercent = originalBytes > 0 ? ((savedBytes / originalBytes) * 100).toFixed(1) : 0;
+            
+            originalSize.textContent = originalBytes.toLocaleString();
+            minifiedSize.textContent = minifiedBytes.toLocaleString();
+            savings.textContent = savedBytes.toLocaleString();
+            savingsPercent.textContent = `${savedPercent}%`;
+        }
+
+        // Minify button click event
+        minifyBtn.addEventListener('click', () => {
+            const code = inputCode.value;
+            
+            if (!code.trim()) {
+                showToast('Please enter some HTML code to minify', true);
+                return;
+            }
+            
+            const minified = minifyHTML(code);
+            outputCode.value = minified;
+            
+            updateStats(code, minified);
+            showToast('HTML minified successfully!');
+        });
+
+        // Clear button click event
+        clearBtn.addEventListener('click', () => {
+            inputCode.value = '';
+            outputCode.value = '';
+            
+            originalSize.textContent = '0';
+            minifiedSize.textContent = '0';
+            savings.textContent = '0';
+            savingsPercent.textContent = '0%';
+            
+            showToast('Cleared all content');
+        });
+
+        // Copy button click event
+        copyBtn.addEventListener('click', () => {
+            if (!outputCode.value.trim()) {
+                showToast('No minified code to copy', true);
+                return;
+            }
+            
+            outputCode.select();
+            document.execCommand('copy');
+            
+            showToast('Minified HTML copied to clipboard!');
+        });
+
+        // Auto-resize textareas
+        function autoResizeTextarea(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+
+        inputCode.addEventListener('input', () => {
+            autoResizeTextarea(inputCode);
+        });
+
+        // Initialize with example code
+        window.addEventListener('load', () => {
+            const exampleCode = `<!DOCTYPE html>
+<html>
+<head>
+    <title>Example Page</title>
+    <!-- This comment will be removed -->
+    <style>
+        body { font-family: Arial, sans-serif; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to my website</h1>
+    
+    <div class="content">
+        <p>This is an example HTML page that will be minified.</p>
+    </div>
+    
+    <script>
+        // This comment will also be removed
+        console.log('Hello World!');
+    <\/script>
+</body>
+</html>`;
+            
+            inputCode.value = exampleCode;
+            autoResizeTextarea(inputCode);
+        });
+    </script>
+</body>
+</html>
