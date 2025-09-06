@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Formatter & Validator | Multi-Tool Website</title>
+    <meta name="description" content="Free online JSON formatter and validator tool. Format, validate, and beautify your JSON code with proper indentation.">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f7ff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            opacity: 0.9;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--gray);
+            color: var(--gray);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray);
+            color: white;
+        }
+
+        .output-container {
+            position: relative;
+        }
+
+        #copy-output {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        #validation-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        .valid {
+            background-color: rgba(76, 201, 240, 0.2);
+            border: 1px solid var(--success);
+            color: #155724;
+        }
+
+        .invalid {
+            background-color: rgba(247, 37, 133, 0.2);
+            border: 1px solid var(--danger);
+            color: #721c24;
+        }
+
+        .ad-container {
+            margin: 30px auto;
+            text-align: center;
+            background: #f0f2f5;
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+
+        .ad-label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            margin-top: 10px;
+        }
+
+        .footer-links a {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JSON Formatter & Validator</h1>
+            <p>Paste your JSON data to format, validate, and beautify it with proper indentation</p>
+        </header>
+
+        <div class="ad-container">
+            <span class="ad-label">Advertisement</span>
+            <!-- Google AdSense Upper Ad -->
+            <div id="upper-ad">
+                <!-- Ad content will be inserted by AdSense -->
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Input JSON</h2>
+                </div>
+                <textarea id="json-input" placeholder="Paste your raw JSON here..."></textarea>
+                <div class="button-group">
+                    <button id="format-btn" class="btn btn-primary">
+                        <i class="fas fa-indent"></i> Format
+                    </button>
+                    <button id="validate-btn" class="btn btn-success">
+                        <i class="fas fa-check-circle"></i> Validate
+                    </button>
+                    <button id="clear-btn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Formatted Output</h2>
+                </div>
+                <div class="output-container">
+                    <button id="copy-output" class="btn btn-outline">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                    <textarea id="json-output" readonly placeholder="Formatted JSON will appear here..."></textarea>
+                </div>
+                <div id="validation-result"></div>
+            </div>
+        </div>
+
+        <div class="ad-container">
+            <span class="ad-label">Advertisement</span>
+            <!-- Google AdSense Middle Ad -->
+            <div id="middle-ad">
+                <!-- Ad content will be inserted by AdSense -->
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2023 Multi-Tool Website. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const jsonInput = document.getElementById('json-input');
+            const jsonOutput = document.getElementById('json-output');
+            const formatBtn = document.getElementById('format-btn');
+            const validateBtn = document.getElementById('validate-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const copyOutputBtn = document.getElementById('copy-output');
+            const validationResult = document.getElementById('validation-result');
+            
+            // Format JSON button click event
+            formatBtn.addEventListener('click', function() {
+                try {
+                    const inputText = jsonInput.value.trim();
+                    if (!inputText) {
+                        showValidationResult('Please enter some JSON data.', false);
+                        return;
+                    }
+                    
+                    const parsedJson = JSON.parse(inputText);
+                    const formattedJson = JSON.stringify(parsedJson, null, 4);
+                    
+                    jsonOutput.value = formattedJson;
+                    showValidationResult('JSON is valid and formatted successfully!', true);
+                } catch (error) {
+                    showValidationResult('Invalid JSON: ' + error.message, false);
+                    jsonOutput.value = '';
+                }
+            });
+            
+            // Validate JSON button click event
+            validateBtn.addEventListener('click', function() {
+                try {
+                    const inputText = jsonInput.value.trim();
+                    if (!inputText) {
+                        showValidationResult('Please enter some JSON data.', false);
+                        return;
+                    }
+                    
+                    JSON.parse(inputText);
+                    showValidationResult('JSON is valid!', true);
+                    
+                    // Also format it if valid
+                    const parsedJson = JSON.parse(inputText);
+                    jsonOutput.value = JSON.stringify(parsedJson, null, 4);
+                } catch (error) {
+                    showValidationResult('Invalid JSON: ' + error.message, false);
+                    jsonOutput.value = '';
+                }
+            });
+            
+            // Clear button click event
+            clearBtn.addEventListener('click', function() {
+                jsonInput.value = '';
+                jsonOutput.value = '';
+                validationResult.style.display = 'none';
+            });
+            
+            // Copy output button click event
+            copyOutputBtn.addEventListener('click', function() {
+                if (!jsonOutput.value) {
+                    return;
+                }
+                
+                jsonOutput.select();
+                document.execCommand('copy');
+                
+                // Show temporary feedback
+                const originalText = copyOutputBtn.innerHTML;
+                copyOutputBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    copyOutputBtn.innerHTML = originalText;
+                }, 2000);
+            });
+            
+            // Function to show validation result
+            function showValidationResult(message, isValid) {
+                validationResult.textContent = message;
+                validationResult.className = isValid ? 'valid' : 'invalid';
+                validationResult.style.display = 'block';
+            }
+            
+            // Example JSON for demonstration
+            jsonInput.value = JSON.stringify(
+                {"example":{"name":"John","age":30,"hobbies":["reading","swimming"]}}, 
+                null, 
+                2
+            );
+        });
+    </script>
+    
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <!-- Google AdSense code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-your-publisher-id" crossorigin="anonymous"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</body>
+</html>
