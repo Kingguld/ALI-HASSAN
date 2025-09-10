@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regex Tester | Multi-Tool Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #20c997, #0ca678);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #20c997;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2b8a3e;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0ca678;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        .tool-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .header {
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .input-section, .output-section {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #2b8a3e;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2b8a3e;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+            font-family: monospace;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #20c997;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option input {
+            width: auto;
+        }
+
+        .output {
+            background-color: #f8f9fa;
+            min-height: 180px;
+            border: 2px solid #ced4da;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-family: monospace;
+        }
+
+        .match {
+            background-color: #fff3bf;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin: 2px 0;
+        }
+
+        .group {
+            background-color: #d3f9d8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin: 2px 0;
+        }
+
+        .error {
+            color: #e03131;
+            font-weight: 600;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, #495057, #343a40);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #37b24d, #2b8a3e);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #f03e3e, #c92a2a);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .results-info {
+            margin-top: 15px;
+            padding: 10px;
+            background: #e6fcf5;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .ad-container {
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .ad-placeholder {
+            background: linear-gradient(45deg, #e6fcf5, #c3fae8);
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px dashed #96f2d7;
+        }
+
+        .ad-placeholder p {
+            color: #0ca678;
+            font-weight: 600;
+        }
+
+        .tool-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .tool-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .tool-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tool-list li:hover {
+            background: #e6fcf5;
+            border-radius: 8px;
+        }
+
+        .tool-list i {
+            color: #20c997;
+        }
+
+        .regex-cheatsheet {
+            margin-top: 25px;
+        }
+
+        .cheatsheet-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .cheatsheet-item code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #2b8a3e;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #0ca678;
+        }
+
+        .copyright {
+            color: #5c7c7a;
+            margin-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .options {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #37b24d;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            animation: modalopen 0.4s;
+        }
+
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-60px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+            padding: 20px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #f1f1f1;
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-body h3 {
+            color: #20c997;
+            margin: 20px 0 10px;
+        }
+
+        .modal-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #20c997;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-tools logo-icon"></i>
+                <h1>Multi-Tool Website</h1>
+            </div>
+            <nav>
+                <div class="nav-links">
+                    <a href="#"><i class="fas fa-home"></i> Home</a>
+                    <a href="#"><i class="fas fa-toolbox"></i> Tools</a>
+                    <a href="#" id="privacy-link"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                    <a href="#" id="contact-link"><i class="fas fa-envelope"></i> Contact</a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="main-content">
+            <div class="tool-container">
+                <div class="header">
+                    <h2>Regex Tester</h2>
+                    <p>Test your regular expressions against sample text in real-time</p>
+                </div>
+
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="regex-input">Regular Expression</label>
+                        <input type="text" id="regex-input" placeholder="Enter your regex pattern" value="\b\w+\b">
+                    </div>
+
+                    <div class="options">
+                        <div class="option">
+                            <input type="checkbox" id="global-checkbox" checked>
+                            <label for="global-checkbox">Global (g)</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="case-checkbox">
+                            <label for="case-checkbox">Case insensitive (i)</label>
+                        </div>
+                        <div class="option">
+                            <input type="checkbox" id="multiline-checkbox">
+                            <label for="multiline-checkbox">Multiline (m)</label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="test-text">Test Text</label>
+                        <textarea id="test-text" rows="6" placeholder="Enter text to test your regex against">This is a sample text with several words. Each word should be matched by the regex pattern.\nYou can add more text here to test your regular expressions.</textarea>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" id="test-btn">
+                        <i class="fas fa-play-circle"></i> Test Regex
+                    </button>
+                    <button class="btn btn-danger" id="clear-btn">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                    <button class="btn btn-success" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy Output
+                    </button>
+                </div>
+
+                <div class="output-section">
+                    <div class="section-header">
+                        <div class="section-title">Results</div>
+                    </div>
+                    <div class="output" id="output-text">Results will appear here...</div>
+                    <div class="results-info" id="results-info"></div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <h3>Other Tools</h3>
+                <ul class="tool-list">
+                    <li><i class="fas fa-code"></i> Base64 Encoder/Decoder</li>
+                    <li><i class="fas fa-hashtag"></i> URL Encoder/Decoder</li>
+                    <li><i class="fas fa-palette"></i> Color Picker</li>
+                    <li><i class="fas fa-hashtag"></i> Hash Generator</li>
+                    <li><i class="fas fa-random"></i> Text Converter</li>
+                </ul>
+
+                <div class="regex-cheatsheet">
+                    <h3>Regex Cheatsheet</h3>
+                    <div class="cheatsheet-item"><code>\d</code> - Digit (0-9)</div>
+                    <div class="cheatsheet-item"><code>\w</code> - Word character (a-z, A-Z, 0-9, _)</div>
+                    <div class="cheatsheet-item"><code>\s</code> - Whitespace</div>
+                    <div class="cheatsheet-item"><code>.</code> - Any character</div>
+                    <div class="cheatsheet-item"><code>^</code> - Start of string</div>
+                    <div class="cheatsheet-item"><code>$</code> - End of string</div>
+                    <div class="cheatsheet-item"><code>[abc]</code> - Any of a, b, or c</div>
+                    <div class="cheatsheet-item"><code>[^abc]</code> - Not a, b, or c</div>
+                    <div class="cheatsheet-item"><code>a|b</code> - a or b</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Tools</a>
+                <a href="#" id="footer-privacy-link">Privacy Policy</a>
+                <a href="#" id="footer-contact-link">Contact</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Multi-Tool Website. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Successfully copied to clipboard!</span>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal" id="privacy-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Privacy Policy</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h3>1. Introduction</h3>
+                <p>Welcome to our Multi-Tool Website. We are committed to protecting your personal information and your right to privacy.</p>
+                
+                <h3>2. Data We Collect</h3>
+                <p>We only collect the data you explicitly provide when using our tools. All processing happens locally in your browser.</p>
+                
+                <h3>3. How We Use Your Data</h3>
+                <p>We use your data solely to provide the tools functionality. We do not store or transmit your data to our servers.</p>
+                
+                <h3>4. Cookies</h3>
+                <p>We use cookies only for essential website functions and analytics to improve our service.</p>
+                
+                <h3>5. Third-Party Services</h3>
+                <p>We use Google AdSense to display advertisements. Google may use cookies to serve ads based on your prior visits to our website.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Contact Us</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Have questions or need support? Reach out to us:</p>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const regexInput = document.getElementById('regex-input');
+        const testText = document.getElementById('test-text');
+        const globalCheckbox = document.getElementById('global-checkbox');
+        const caseCheckbox = document.getElementById('case-checkbox');
+        const multilineCheckbox = document.getElementById('multiline-checkbox');
+        const testBtn = document.getElementById('test-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const outputText = document.getElementById('output-text');
+        const resultsInfo = document.getElementById('results-info');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // Test regex function
+        function testRegex() {
+            const regexValue = regexInput.value;
+            const testValue = testText.value;
+            
+            if (!regexValue) {
+                outputText.innerHTML = '<span class="error">Please enter a regular expression</span>';
+                resultsInfo.textContent = '';
+                return;
+            }
+            
+            if (!testValue) {
+                outputText.innerHTML = '<span class="error">Please enter text to test against</span>';
+                resultsInfo.textContent = '';
+                return;
+            }
+            
+            try {
+                // Create flags string
+                let flags = '';
+                if (globalCheckbox.checked) flags += 'g';
+                if (caseCheckbox.checked) flags += 'i';
+                if (multilineCheckbox.checked) flags += 'm';
+                
+                // Create regex
+                const regex = new RegExp(regexValue, flags);
+                
+                // Test regex
+                const matches = testValue.match(regex);
+                
+                if (!matches) {
+                    outputText.innerHTML = '<span class="error">No matches found</span>';
+                    resultsInfo.textContent = '0 matches found';
+                    return;
+                }
+                
+                // Display matches with highlighting
+                let highlightedText = testValue;
+                let matchCount = 0;
+                
+                if (regex.global) {
+                    // For global regex, highlight all matches
+                    highlightedText = testValue.replace(regex, match => {
+                        matchCount++;
+                        return `<span class="match">${match}</span>`;
+                    });
+                } else {
+                    // For non-global regex, highlight only the first match
+                    highlightedText = testValue.replace(regex, match => {
+                        matchCount = 1;
+                        return `<span class="match">${match}</span>`;
+                    });
+                }
+                
+                outputText.innerHTML = highlightedText;
+                resultsInfo.textContent = `${matchCount} match${matchCount !== 1 ? 'es' : ''} found`;
+                
+            } catch (error) {
+                outputText.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+                resultsInfo.textContent = '';
+            }
+        }
+
+        // Clear inputs
+        function clearInputs() {
+            regexInput.value = '';
+            testText.value = '';
+            outputText.textContent = 'Results will appear here...';
+            resultsInfo.textContent = '';
+            regexInput.focus();
+        }
+
+        // Copy output to clipboard
+        function copyOutput() {
+            if (outputText.textContent) {
+                navigator.clipboard.writeText(outputText.textContent)
+                    .then(() => {
+                        showToast('Copied to clipboard!');
+                    })
+                    .catch(err => {
+                        showToast('Failed to copy: ' + err);
+                    });
+            }
+        }
+
+        // Toast notification function
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event listeners
+        testBtn.addEventListener('click', testRegex);
+        clearBtn.addEventListener('click', clearInputs);
+        copyBtn.addEventListener('click', copyOutput);
+
+        // Real-time testing on input change
+        regexInput.addEventListener('input', testRegex);
+        testText.addEventListener('input', testRegex);
+        globalCheckbox.addEventListener('change', testRegex);
+        caseCheckbox.addEventListener('change', testRegex);
+        multilineCheckbox.addEventListener('change', testRegex);
+
+        // Modal functionality
+        const privacyModal = document.getElementById('privacy-modal');
+        const contactModal = document.getElementById('contact-modal');
+        const privacyLinks = document.querySelectorAll('#privacy-link, #footer-privacy-link');
+        const contactLinks = document.querySelectorAll('#contact-link, #footer-contact-link');
+        const closeButtons = document.querySelectorAll('.close');
+
+        privacyLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                privacyModal.style.display = 'block';
+            });
+        });
+
+        contactLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.style.display = 'block';
+            });
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                privacyModal.style.display = 'none';
+                contactModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+            if (e.target === contactModal) {
+                contactModal.style.display = 'none';
+            }
+        });
+
+        // Initialize with example
+        testRegex();
+    </script>
+</body>
+</html>
