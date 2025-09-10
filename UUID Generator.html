@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator | Multi-Tool Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #20c997, #0ca678);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #20c997;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2b8a3e;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0ca678;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        .tool-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .header {
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .input-section, .output-section {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #2b8a3e;
+            font-weight: 600;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option input {
+            width: auto;
+        }
+
+        .output {
+            background-color: #f8f9fa;
+            min-height: 100px;
+            border: 2px solid #ced4da;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-family: monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #2b8a3e;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, #495057, #343a40);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #37b24d, #2b8a3e);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #f03e3e, #c92a2a);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .uuid-history {
+            margin-top: 25px;
+        }
+
+        .uuid-history h3 {
+            color: #2b8a3e;
+            margin-bottom: 15px;
+        }
+
+        .history-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-family: monospace;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-list li:last-child {
+            border-bottom: none;
+        }
+
+        .history-copy {
+            background: #e9ecef;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .ad-container {
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .ad-placeholder {
+            background: linear-gradient(45deg, #e6fcf5, #c3fae8);
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px dashed #96f2d7;
+        }
+
+        .ad-placeholder p {
+            color: #0ca678;
+            font-weight: 600;
+        }
+
+        .tool-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .tool-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .tool-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tool-list li:hover {
+            background: #e6fcf5;
+            border-radius: 8px;
+        }
+
+        .tool-list i {
+            color: #20c997;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #2b8a3e;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #0ca678;
+        }
+
+        .copyright {
+            color: #5c7c7a;
+            margin-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .options {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #37b24d;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            animation: modalopen 0.4s;
+        }
+
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-60px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, #20c997, #0ca678);
+            color: white;
+            padding: 20px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #f1f1f1;
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-body h3 {
+            color: #20c997;
+            margin: 20px 0 10px;
+        }
+
+        .modal-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #20c997;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-tools logo-icon"></i>
+                <h1>Multi-Tool Website</h1>
+            </div>
+            <nav>
+                <div class="nav-links">
+                    <a href="#"><i class="fas fa-home"></i> Home</a>
+                    <a href="#"><i class="fas fa-toolbox"></i> Tools</a>
+                    <a href="#" id="privacy-link"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                    <a href="#" id="contact-link"><i class="fas fa-envelope"></i> Contact</a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="main-content">
+            <div class="tool-container">
+                <div class="header">
+                    <h2>UUID Generator</h2>
+                    <p>Generate unique Universal Unique Identifiers (UUIDs) instantly</p>
+                </div>
+
+                <div class="options">
+                    <div class="option">
+                        <input type="checkbox" id="hyphens-checkbox" checked>
+                        <label for="hyphens-checkbox">Include hyphens</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="uppercase-checkbox">
+                        <label for="uppercase-checkbox">Uppercase letters</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="braces-checkbox">
+                        <label for="braces-checkbox">Include braces</label>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" id="generate-btn">
+                        <i class="fas fa-plus-circle"></i> Generate UUID
+                    </button>
+                    <button class="btn btn-success" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy UUID
+                    </button>
+                    <button class="btn btn-danger" id="clear-btn">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+
+                <div class="output-section">
+                    <div class="section-header">
+                        <div class="section-title">Generated UUID</div>
+                    </div>
+                    <div class="output" id="uuid-output">
+                        Click "Generate UUID" to create one
+                    </div>
+                </div>
+
+                <div class="uuid-history">
+                    <h3>Recent UUIDs</h3>
+                    <ul class="history-list" id="history-list">
+                        <!-- History items will be added here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <h3>Other Tools</h3>
+                <ul class="tool-list">
+                    <li><i class="fas fa-code"></i> Base64 Encoder/Decoder</li>
+                    <li><i class="fas fa-hashtag"></i> URL Encoder/Decoder</li>
+                    <li><i class="fas fa-palette"></i> Color Picker</li>
+                    <li><i class="fas fa-hashtag"></i> Regex Tester</li>
+                    <li><i class="fas fa-qrcode"></i> QR Code Generator</li>
+                </ul>
+
+                <div class="uuid-info">
+                    <h3>About UUIDs</h3>
+                    <p>UUIDs are 128-bit numbers used to uniquely identify information in computer systems. The probability of generating duplicate UUIDs is extremely low.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Tools</a>
+                <a href="#" id="footer-privacy-link">Privacy Policy</a>
+                <a href="#" id="footer-contact-link">Contact</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Multi-Tool Website. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">UUID generated successfully!</span>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal" id="privacy-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Privacy Policy</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h3>1. Introduction</h3>
+                <p>Welcome to our Multi-Tool Website. We are committed to protecting your personal information and your right to privacy.</p>
+                
+                <h3>2. Data We Collect</h3>
+                <p>We only collect the data you explicitly provide when using our tools. All processing happens locally in your browser.</p>
+                
+                <h3>3. How We Use Your Data</h3>
+                <p>We use your data solely to provide the tools functionality. We do not store or transmit your data to our servers.</p>
+                
+                <h3>4. Cookies</h3>
+                <p>We use cookies only for essential website functions and analytics to improve our service.</p>
+                
+                <h3>5. Third-Party Services</h3>
+                <p>We use Google AdSense to display advertisements. Google may use cookies to serve ads based on your prior visits to our website.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Contact Us</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Have questions or need support? Reach out to us:</p>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const hyphensCheckbox = document.getElementById('hyphens-checkbox');
+        const uppercaseCheckbox = document.getElementById('uppercase-checkbox');
+        const bracesCheckbox = document.getElementById('braces-checkbox');
+        const generateBtn = document.getElementById('generate-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const uuidOutput = document.getElementById('uuid-output');
+        const historyList = document.getElementById('history-list');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        let currentUUID = '';
+        let history = [];
+
+        // Generate UUID function
+        function generateUUID() {
+            // Generate random UUID (v4)
+            let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+
+            // Apply formatting options
+            if (!hyphensCheckbox.checked) {
+                uuid = uuid.replace(/-/g, '');
+            }
+            
+            if (uppercaseCheckbox.checked) {
+                uuid = uuid.toUpperCase();
+            }
+            
+            if (bracesCheckbox.checked) {
+                uuid = `{${uuid}}`;
+            }
+
+            currentUUID = uuid;
+            uuidOutput.textContent = uuid;
+            
+            // Add to history
+            addToHistory(uuid);
+            
+            showToast('UUID generated successfully!');
+        }
+
+        // Copy UUID to clipboard
+        function copyUUID() {
+            if (!currentUUID) {
+                showToast('Please generate a UUID first');
+                return;
+            }
+            
+            navigator.clipboard.writeText(currentUUID)
+                .then(() => {
+                    showToast('UUID copied to clipboard!');
+                })
+                .catch(err => {
+                    showToast('Failed to copy: ' + err);
+                });
+        }
+
+        // Clear output
+        function clearOutput() {
+            currentUUID = '';
+            uuidOutput.textContent = 'Click "Generate UUID" to create one';
+            showToast('Output cleared');
+        }
+
+        // Add UUID to history
+        function addToHistory(uuid) {
+            history.unshift(uuid);
+            if (history.length > 5) {
+                history.pop();
+            }
+            
+            updateHistoryDisplay();
+        }
+
+        // Update history display
+        function updateHistoryDisplay() {
+            historyList.innerHTML = '';
+            
+            history.forEach((uuid, index) => {
+                const li = document.createElement('li');
+                
+                const uuidSpan = document.createElement('span');
+                uuidSpan.textContent = uuid;
+                uuidSpan.style.fontFamily = 'monospace';
+                
+                const copyButton = document.createElement('button');
+                copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+                copyButton.classList.add('history-copy');
+                copyButton.title = 'Copy this UUID';
+                copyButton.addEventListener('click', () => {
+                    navigator.clipboard.writeText(uuid)
+                        .then(() => {
+                            showToast('UUID copied to clipboard!');
+                        })
+                        .catch(err => {
+                            showToast('Failed to copy: ' + err);
+                        });
+                });
+                
+                li.appendChild(uuidSpan);
+                li.appendChild(copyButton);
+                historyList.appendChild(li);
+            });
+        }
+
+        // Toast notification function
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event listeners
+        generateBtn.addEventListener('click', generateUUID);
+        copyBtn.addEventListener('click', copyUUID);
+        clearBtn.addEventListener('click', clearOutput);
+
+        // Options change events
+        hyphensCheckbox.addEventListener('change', generateUUID);
+        uppercaseCheckbox.addEventListener('change', generateUUID);
+        bracesCheckbox.addEventListener('change', generateUUID);
+
+        // Modal functionality
+        const privacyModal = document.getElementById('privacy-modal');
+        const contactModal = document.getElementById('contact-modal');
+        const privacyLinks = document.querySelectorAll('#privacy-link, #footer-privacy-link');
+        const contactLinks = document.querySelectorAll('#contact-link, #footer-contact-link');
+        const closeButtons = document.querySelectorAll('.close');
+
+        privacyLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                privacyModal.style.display = 'block';
+            });
+        });
+
+        contactLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.style.display = 'block';
+            });
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                privacyModal.style.display = 'none';
+                contactModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+            if (e.target === contactModal) {
+                contactModal.style.display = 'none';
+            }
+        });
+
+        // Initialize with a UUID
+        generateUUID();
+    </script>
+</body>
+</html>
