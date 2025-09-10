@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Generator | Multi-Tool Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #fd7e14, #f76707);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #fd7e14;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #e8590c;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #fd7e14;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        .tool-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .header {
+            background: linear-gradient(to right, #fd7e14, #f76707);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .input-section, .output-section {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #e8590c;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e8590c;
+        }
+
+        textarea, input[type="text"], select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ffe8cc;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus, input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #fd7e14;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e8590c;
+        }
+
+        .color-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .barcode-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        #barcode {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #fd7e14, #f76707);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, #495057, #343a40);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #dc3545, #c92a2a);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .ad-container {
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .ad-placeholder {
+            background: linear-gradient(45deg, #fff4e6, #ffe8cc);
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px dashed #ffd8a8;
+        }
+
+        .ad-placeholder p {
+            color: #fd7e14;
+            font-weight: 600;
+        }
+
+        .tool-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .tool-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .tool-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tool-list li:hover {
+            background: #fff4e6;
+            border-radius: 8px;
+        }
+
+        .tool-list i {
+            color: #fd7e14;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #e8590c;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #fd7e14;
+        }
+
+        .copyright {
+            color: #5c7c7a;
+            margin-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .color-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            animation: modalopen 0.4s;
+        }
+
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-60px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, #fd7e14, #f76707);
+            color: white;
+            padding: 20px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #f1f1f1;
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-body h3 {
+            color: #fd7e14;
+            margin: 20px 0 10px;
+        }
+
+        .modal-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #fd7e14;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffe8cc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-tools logo-icon"></i>
+                <h1>Multi-Tool Website</h1>
+            </div>
+            <nav>
+                <div class="nav-links">
+                    <a href="#"><i class="fas fa-home"></i> Home</a>
+                    <a href="#"><i class="fas fa-toolbox"></i> Tools</a>
+                    <a href="#" id="privacy-link"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                    <a href="#" id="contact-link"><i class="fas fa-envelope"></i> Contact</a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="main-content">
+            <div class="tool-container">
+                <div class="header">
+                    <h2>Barcode Generator</h2>
+                    <p>Generate barcodes for products, inventory, or information</p>
+                </div>
+
+                <div class="input-section">
+                    <div class="input-group">
+                        <label for="barcode-text">Text or Numbers to encode</label>
+                        <textarea id="barcode-text" rows="4" placeholder="Enter text or numbers to generate barcode">123456789012</textarea>
+                    </div>
+
+                    <div class="options">
+                        <div class="option">
+                            <label for="barcode-type">Barcode Type</label>
+                            <select id="barcode-type">
+                                <option value="CODE128">CODE128</option>
+                                <option value="EAN13">EAN-13</option>
+                                <option value="UPC">UPC</option>
+                                <option value="CODE39">CODE39</option>
+                                <option value="ITF">ITF</option>
+                            </select>
+                        </div>
+                        <div class="option">
+                            <label for="barcode-size">Barcode Size</label>
+                            <select id="barcode-size">
+                                <option value="1">Small</option>
+                                <option value="1.5" selected>Medium</option>
+                                <option value="2">Large</option>
+                                <option value="2.5">Extra Large</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="color-options">
+                        <div class="option">
+                            <label for="line-color">Line Color</label>
+                            <input type="color" id="line-color" value="#000000">
+                        </div>
+                        <div class="option">
+                            <label for="background-color">Background Color</label>
+                            <input type="color" id="background-color" value="#FFFFFF">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" id="generate-btn">
+                        <i class="fas fa-barcode"></i> Generate Barcode
+                    </button>
+                    <button class="btn btn-danger" id="clear-btn">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+
+                <div class="output-section">
+                    <div class="section-header">
+                        <div class="section-title">Generated Barcode</div>
+                    </div>
+                    <div class="barcode-container">
+                        <svg id="barcode"></svg>
+                        <div class="buttons">
+                            <button class="btn btn-success" id="download-btn">
+                                <i class="fas fa-download"></i> Download Barcode
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <h3>Other Tools</h3>
+                <ul class="tool-list">
+                    <li><i class="fas fa-code"></i> Base64 Encoder/Decoder</li>
+                    <li><i class="fas fa-hashtag"></i> URL Encoder/Decoder</li>
+                    <li><i class="fas fa-palette"></i> Color Picker</li>
+                    <li><i class="fas fa-hashtag"></i> Regex Tester</li>
+                    <li><i class="fas fa-qrcode"></i> QR Code Generator</li>
+                </ul>
+
+                <div class="barcode-tips">
+                    <h3>Barcode Tips</h3>
+                    <p>• CODE128 is the most versatile format for alphanumeric data</p>
+                    <p>• EAN-13 is used for retail products worldwide</p>
+                    <p>• UPC is commonly used in the United States and Canada</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Tools</a>
+                <a href="#" id="footer-privacy-link">Privacy Policy</a>
+                <a href="#" id="footer-contact-link">Contact</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Multi-Tool Website. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Barcode generated successfully!</span>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal" id="privacy-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Privacy Policy</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h3>1. Introduction</h3>
+                <p>Welcome to our Multi-Tool Website. We are committed to protecting your personal information and your right to privacy.</p>
+                
+                <h3>2. Data We Collect</h3>
+                <p>We only collect the data you explicitly provide when using our tools. All processing happens locally in your browser.</p>
+                
+                <h3>3. How We Use Your Data</h3>
+                <p>We use your data solely to provide the tools functionality. We do not store or transmit your data to our servers.</p>
+                
+                <h3>4. Cookies</h3>
+                <p>We use cookies only for essential website functions and analytics to improve our service.</p>
+                
+                <h3>5. Third-Party Services</h3>
+                <p>We use Google AdSense to display advertisements. Google may use cookies to serve ads based on your prior visits to our website.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Contact Us</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Have questions or need support? Reach out to us:</p>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const barcodeText = document.getElementById('barcode-text');
+        const barcodeType = document.getElementById('barcode-type');
+        const barcodeSize = document.getElementById('barcode-size');
+        const lineColor = document.getElementById('line-color');
+        const backgroundColor = document.getElementById('background-color');
+        const generateBtn = document.getElementById('generate-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const barcodeSvg = document.getElementById('barcode');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // Generate barcode
+        function generateBarcode() {
+            const text = barcodeText.value.trim();
+            const type = barcodeType.value;
+            const size = parseFloat(barcodeSize.value);
+            const lineColorValue = lineColor.value;
+            const bgColorValue = backgroundColor.value;
+            
+            if (!text) {
+                showToast('Please enter text or numbers to generate barcode');
+                return;
+            }
+            
+            try {
+                // Clear previous barcode
+                barcodeSvg.innerHTML = '';
+                
+                // Generate new barcode
+                JsBarcode("#barcode", text, {
+                    format: type,
+                    width: size,
+                    height: 100,
+                    displayValue: true,
+                    lineColor: lineColorValue,
+                    background: bgColorValue,
+                    fontSize: 16,
+                    margin: 10
+                });
+                
+                showToast('Barcode generated successfully!');
+            } catch (error) {
+                showToast('Error generating barcode: ' + error.message);
+            }
+        }
+
+        // Clear inputs
+        function clearInputs() {
+            barcodeText.value = '';
+            barcodeSvg.innerHTML = '';
+            barcodeText.focus();
+            showToast('Input cleared');
+        }
+
+        // Download barcode
+        function downloadBarcode() {
+            if (!barcodeSvg.innerHTML) {
+                showToast('Please generate a barcode first');
+                return;
+            }
+            
+            try {
+                const svgData = new XMLSerializer().serializeToString(barcodeSvg);
+                const svgBlob = new Blob([svgData], {type: "image/svg+xml;charset=utf-8"});
+                const svgUrl = URL.createObjectURL(svgBlob);
+                const downloadLink = document.createElement("a");
+                
+                downloadLink.href = svgUrl;
+                downloadLink.download = `barcode-${new Date().getTime()}.svg`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                
+                showToast('Barcode downloaded successfully!');
+            } catch (error) {
+                showToast('Error downloading barcode: ' + error.message);
+            }
+        }
+
+        // Toast notification function
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event listeners
+        generateBtn.addEventListener('click', generateBarcode);
+        clearBtn.addEventListener('click', clearInputs);
+        downloadBtn.addEventListener('click', downloadBarcode);
+
+        // Real-time generation on input change
+        barcodeText.addEventListener('input', generateBarcode);
+        barcodeType.addEventListener('change', generateBarcode);
+        barcodeSize.addEventListener('change', generateBarcode);
+        lineColor.addEventListener('input', generateBarcode);
+        backgroundColor.addEventListener('input', generateBarcode);
+
+        // Modal functionality
+        const privacyModal = document.getElementById('privacy-modal');
+        const contactModal = document.getElementById('contact-modal');
+        const privacyLinks = document.querySelectorAll('#privacy-link, #footer-privacy-link');
+        const contactLinks = document.querySelectorAll('#contact-link, #footer-contact-link');
+        const closeButtons = document.querySelectorAll('.close');
+
+        privacyLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                privacyModal.style.display = 'block';
+            });
+        });
+
+        contactLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.style.display = 'block';
+            });
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                privacyModal.style.display = 'none';
+                contactModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+            if (e.target === contactModal) {
+                contactModal.style.display = 'none';
+            }
+        });
+
+        // Initialize with example
+        generateBarcode();
+    </script>
+</body>
+</html>
