@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Encoder/Decoder | Multi-Tool Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.2);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #1976d2, #0d47a1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #1976d2;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1565c0;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #0d47a1;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        .tool-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(30, 136, 229, 0.2);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .header {
+            background: linear-gradient(to right, #1976d2, #0d47a1);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .input-section, .output-section {
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #1976d2;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 15px;
+            border: 2px solid #bbdefb;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #1976d2;
+        }
+
+        .output {
+            background-color: #e3f2fd;
+            min-height: 180px;
+            border: 2px solid #bbdefb;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 16px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #1976d2, #1565c0);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(to right, #0d47a1, #1565c0);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, #2196f3, #1976d2);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 136, 229, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(30, 136, 229, 0.2);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .ad-container {
+            margin-bottom: 25px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .ad-placeholder {
+            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            border: 2px dashed #90caf9;
+        }
+
+        .ad-placeholder p {
+            color: #1976d2;
+            font-weight: 600;
+        }
+
+        .tool-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .tool-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .tool-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tool-list li:hover {
+            background: #e3f2fd;
+            border-radius: 8px;
+        }
+
+        .tool-list i {
+            color: #1976d2;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 -4px 15px rgba(30, 136, 229, 0.1);
+            padding: 20px;
+            margin-top: auto;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #1976d2;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #0d47a1;
+        }
+
+        .copyright {
+            color: #546e7a;
+            margin-top: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2196f3;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(30, 136, 229, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            animation: modalopen 0.4s;
+        }
+
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-60px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, #1976d2, #0d47a1);
+            color: white;
+            padding: 20px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #e3f2fd;
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-body h3 {
+            color: #1976d2;
+            margin: 20px 0 10px;
+        }
+
+        .modal-body p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1976d2;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bbdefb;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-tools logo-icon"></i>
+                <h1>Multi-Tool Website</h1>
+            </div>
+            <nav>
+                <div class="nav-links">
+                    <a href="#"><i class="fas fa-home"></i> Home</a>
+                    <a href="#"><i class="fas fa-toolbox"></i> Tools</a>
+                    <a href="#" id="privacy-link"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                    <a href="#" id="contact-link"><i class="fas fa-envelope"></i> Contact</a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="main-content">
+            <div class="tool-container">
+                <div class="header">
+                    <h2>URL Encoder/Decoder</h2>
+                    <p>Encode text to URL format or decode URL-encoded text back to readable format</p>
+                </div>
+
+                <div class="input-section">
+                    <div class="section-header">
+                        <div class="section-title">Input</div>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger" id="clear-input">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="input-text" placeholder="Enter text to encode or URL-encoded text to decode..." autofocus>Hello World! How are you?</textarea>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" id="encode-btn">
+                        <i class="fas fa-lock"></i> Encode
+                    </button>
+                    <button class="btn btn-secondary" id="decode-btn">
+                        <i class="fas fa-lock-open"></i> Decode
+                    </button>
+                    <button class="btn btn-success" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy Output
+                    </button>
+                </div>
+
+                <div class="output-section">
+                    <div class="section-header">
+                        <div class="section-title">Output</div>
+                    </div>
+                    <div class="output" id="output-text">Results will appear here...</div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <div class="ad-container">
+                    <div class="ad-placeholder">
+                        <p>Google AdSense</p>
+                        <p>Advertisement</p>
+                    </div>
+                </div>
+
+                <h3>Other Tools</h3>
+                <ul class="tool-list">
+                    <li><i class="fas fa-code"></i> Base64 Encoder/Decoder</li>
+                    <li><i class="fas fa-hashtag"></i> HTML Encoder/Decoder</li>
+                    <li><i class="fas fa-font"></i> String Converter</li>
+                    <li><i class="fas fa-hashtag"></i> Hash Generator</li>
+                    <li><i class="fas fa-random"></i> Color Converter</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#">Tools</a>
+                <a href="#" id="footer-privacy-link">Privacy Policy</a>
+                <a href="#" id="footer-contact-link">Contact</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Multi-Tool Website. All rights reserved.
+            </div>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Successfully copied to clipboard!</span>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal" id="privacy-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Privacy Policy</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h3>1. Introduction</h3>
+                <p>Welcome to our Multi-Tool Website. We are committed to protecting your personal information and your right to privacy.</p>
+                
+                <h3>2. Data We Collect</h3>
+                <p>We only collect the data you explicitly provide when using our tools. All processing happens locally in your browser.</p>
+                
+                <h3>3. How We Use Your Data</h3>
+                <p>We use your data solely to provide the tools functionality. We do not store or transmit your data to our servers.</p>
+                
+                <h3>4. Cookies</h3>
+                <p>We use cookies only for essential website functions and analytics to improve our service.</p>
+                
+                <h3>5. Third-Party Services</h3>
+                <p>We use Google AdSense to display advertisements. Google may use cookies to serve ads based on your prior visits to our website.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Contact Us</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Have questions or need support? Reach out to us:</p>
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL encoding/decoding functions
+        function urlEncode(str) {
+            return encodeURIComponent(str);
+        }
+
+        function urlDecode(str) {
+            try {
+                return decodeURIComponent(str);
+            } catch (e) {
+                return "Error: Invalid URL-encoded string";
+            }
+        }
+
+        // DOM elements
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        const encodeBtn = document.getElementById('encode-btn');
+        const decodeBtn = document.getElementById('decode-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const clearInputBtn = document.getElementById('clear-input');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        // Encode button event
+        encodeBtn.addEventListener('click', () => {
+            const input = inputText.value;
+            if (input) {
+                outputText.textContent = urlEncode(input);
+            } else {
+                outputText.textContent = "Please enter text to encode";
+            }
+        });
+
+        // Decode button event
+        decodeBtn.addEventListener('click', () => {
+            const input = inputText.value;
+            if (input) {
+                outputText.textContent = urlDecode(input);
+            } else {
+                outputText.textContent = "Please enter URL-encoded text to decode";
+            }
+        });
+
+        // Copy button event
+        copyBtn.addEventListener('click', () => {
+            if (outputText.textContent) {
+                navigator.clipboard.writeText(outputText.textContent)
+                    .then(() => {
+                        showToast('Copied to clipboard!');
+                    })
+                    .catch(err => {
+                        showToast('Failed to copy: ' + err);
+                    });
+            }
+        });
+
+        // Clear input button event
+        clearInputBtn.addEventListener('click', () => {
+            inputText.value = '';
+            inputText.focus();
+        });
+
+        // Real-time processing on input
+        inputText.addEventListener('input', () => {
+            // Optional: Add real-time processing if needed
+        });
+
+        // Toast notification function
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Modal functionality
+        const privacyModal = document.getElementById('privacy-modal');
+        const contactModal = document.getElementById('contact-modal');
+        const privacyLinks = document.querySelectorAll('#privacy-link, #footer-privacy-link');
+        const contactLinks = document.querySelectorAll('#contact-link, #footer-contact-link');
+        const closeButtons = document.querySelectorAll('.close');
+
+        privacyLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                privacyModal.style.display = 'block';
+            });
+        });
+
+        contactLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.style.display = 'block';
+            });
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                privacyModal.style.display = 'none';
+                contactModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+            if (e.target === contactModal) {
+                contactModal.style.display = 'none';
+            }
+        });
+
+        // Initialize with example
+        outputText.textContent = urlEncode(inputText.value);
+    </script>
+</body>
+</html>
