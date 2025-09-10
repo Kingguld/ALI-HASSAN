@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator | Multi-Tool Website</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Correct QRCodeJS library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* --- Your CSS unchanged (clean) --- */
+    * {
+      margin: 0; padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container { max-width: 1200px; margin: auto; padding: 20px; }
+    header {
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px; margin-bottom: 20px;
+    }
+    .logo { display: flex; align-items: center; gap: 15px; }
+    .logo h1 {
+      font-size: 2rem;
+      background: linear-gradient(to right, #6f42c1, #6610f2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .logo-icon { font-size: 2.2rem; color: #6f42c1; }
+    nav { display: flex; justify-content: space-between; margin-top: 15px; }
+    .nav-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .nav-links a {
+      text-decoration: none; font-weight: 600; color: #5a4fcf;
+    }
+    .nav-links a:hover { color: #6f42c1; }
+    .main-content {
+      display: grid; grid-template-columns: 1fr 300px; gap: 20px;
+    }
+    .tool-container {
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    .header {
+      background: linear-gradient(to right, #6f42c1, #6610f2);
+      color: #fff; padding: 20px; border-radius: 10px;
+      text-align: center; margin-bottom: 20px;
+    }
+    textarea, select {
+      width: 100%; padding: 12px;
+      border: 2px solid #ccc; border-radius: 8px;
+      font-size: 16px;
+    }
+    .buttons {
+      display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-top: 20px;
+    }
+    .btn {
+      padding: 12px 24px; border: none; border-radius: 50px;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      transition: 0.3s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(to right, #6f42c1, #6610f2); color: #fff; }
+    .btn-danger { background: linear-gradient(to right, #dc3545, #c92a2a); color: #fff; }
+    .btn-success { background: linear-gradient(to right, #28a745, #20c997); color: #fff; }
+    #qrcode {
+      margin: 20px auto; padding: 15px; background: #fff;
+      border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .toast {
+      position: fixed; bottom: 20px; right: 20px;
+      background: #28a745; color: #fff;
+      padding: 12px 20px; border-radius: 30px;
+      opacity: 0; transform: translateY(50px);
+      transition: all 0.3s ease; z-index: 1000;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    footer {
+      background: #fff; border-radius: 10px;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+      padding: 20px; margin-top: auto; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <i class="fas fa-tools logo-icon"></i>
+        <h1>Multi-Tool Website</h1>
+      </div>
+      <nav>
+        <div class="nav-links">
+          <a href="#"><i class="fas fa-home"></i> Home</a>
+          <a href="#"><i class="fas fa-toolbox"></i> Tools</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="main-content">
+      <div class="tool-container">
+        <div class="header">
+          <h2>QR Code Generator</h2>
+          <p>Generate QR codes for URLs, text, or contact information</p>
+        </div>
+
+        <div>
+          <label for="qr-text">Text or URL</label>
+          <textarea id="qr-text" rows="4">https://example.com</textarea>
+        </div>
+        <div>
+          <label for="qr-size">QR Code Size</label>
+          <select id="qr-size">
+            <option value="128">128x128</option>
+            <option value="256" selected>256x256</option>
+            <option value="384">384x384</option>
+            <option value="512">512x512</option>
+          </select>
+        </div>
+        <div>
+          <label for="qr-error">Error Correction</label>
+          <select id="qr-error">
+            <option value="L">Low</option>
+            <option value="M" selected>Medium</option>
+            <option value="Q">Quartile</option>
+            <option value="H">High</option>
+          </select>
+        </div>
+
+        <div class="buttons">
+          <button class="btn btn-primary" id="generate-btn"><i class="fas fa-qrcode"></i> Generate</button>
+          <button class="btn btn-danger" id="clear-btn"><i class="fas fa-trash"></i> Clear</button>
+        </div>
+
+        <div id="qrcode"></div>
+        <div class="buttons">
+          <button class="btn btn-success" id="download-btn"><i class="fas fa-download"></i> Download</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2023 Multi-Tool Website</p>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast"><span id="toast-message"></span></div>
+
+  <script>
+    const qrText = document.getElementById('qr-text');
+    const qrSize = document.getElementById('qr-size');
+    const qrError = document.getElementById('qr-error');
+    const generateBtn = document.getElementById('generate-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const qrcodeDiv = document.getElementById('qrcode');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+
+    let currentQRCode = null;
+
+    function generateQRCode() {
+      const text = qrText.value.trim();
+      const size = parseInt(qrSize.value);
+      const errorCorrection = qrError.value;
+
+      if (!text) {
+        showToast("Enter text or URL first!");
+        return;
+      }
+
+      qrcodeDiv.innerHTML = '';
+      currentQRCode = new QRCode(qrcodeDiv, {
+        text: text,
+        width: size,
+        height: size,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel[errorCorrection]
+      });
+      showToast("QR Code generated!");
+    }
+
+    function clearInputs() {
+      qrText.value = '';
+      qrcodeDiv.innerHTML = '';
+      currentQRCode = null;
+      showToast("Cleared!");
+    }
+
+    function downloadQRCode() {
+      if (!currentQRCode) {
+        showToast("Generate a QR Code first!");
+        return;
+      }
+      const canvas = qrcodeDiv.querySelector("canvas");
+      if (!canvas) return;
+      const link = document.createElement("a");
+      link.download = `qrcode-${Date.now()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      showToast("QR Code downloaded!");
+    }
+
+    function showToast(msg) {
+      toastMessage.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    generateBtn.addEventListener("click", generateQRCode);
+    clearBtn.addEventListener("click", clearInputs);
+    downloadBtn.addEventListener("click", downloadQRCode);
+
+    // auto-generate on load
+    generateQRCode();
+  </script>
+</body>
+</html>
