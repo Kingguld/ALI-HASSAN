@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free Time Zone Converter Tool - Convert between different time zones instantly">
+    <title>Time Zone Converter | Multi-Tool Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --gray: #6c757d;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--success);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .tool-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .tool-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .converter {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .converter {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .time-zone-box {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .time-zone-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .time-zone-title i {
+            margin-right: 10px;
+        }
+
+        select, input, button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .time-display {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 1rem 0;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .popular-zones {
+            margin-top: 2rem;
+        }
+
+        .popular-zones h3 {
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .zone-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .zone-btn {
+            background: var(--light);
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .zone-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--success);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: var(--gray);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Privacy Policy and Contact Pages */
+        .page-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .page-title {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .page-section {
+            margin-bottom: 2rem;
+        }
+
+        .page-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 64px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 64px);
+                background: var(--secondary);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+
+            .time-display {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-tools"></i>
+                    <span>MultiTools</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Other Tools</a></li>
+                </ul>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="tool-container">
+            <h1 class="tool-title">Time Zone Converter</h1>
+            <div class="converter">
+                <div class="time-zone-box">
+                    <h2 class="time-zone-title"><i class="fas fa-clock"></i> From Time Zone</h2>
+                    <select id="from-timezone">
+                        <option value="UTC">UTC (Coordinated Universal Time)</option>
+                        <option value="EST">EST (Eastern Standard Time)</option>
+                        <option value="PST">PST (Pacific Standard Time)</option>
+                        <option value="CST">CST (Central Standard Time)</option>
+                        <option value="MST">MST (Mountain Standard Time)</option>
+                        <option value="GMT">GMT (Greenwich Mean Time)</option>
+                        <option value="CET">CET (Central European Time)</option>
+                        <option value="EET">EET (Eastern European Time)</option>
+                        <option value="AEST">AEST (Australian Eastern Standard Time)</option>
+                        <option value="IST">IST (Indian Standard Time)</option>
+                        <option value="JST">JST (Japan Standard Time)</option>
+                    </select>
+                    <input type="datetime-local" id="from-datetime">
+                    <div class="time-display" id="from-time-display">12:00 PM</div>
+                </div>
+
+                <div class="time-zone-box">
+                    <h2 class="time-zone-title"><i class="fas fa-clock"></i> To Time Zone</h2>
+                    <select id="to-timezone">
+                        <option value="UTC">UTC (Coordinated Universal Time)</option>
+                        <option value="EST" selected>EST (Eastern Standard Time)</option>
+                        <option value="PST">PST (Pacific Standard Time)</option>
+                        <option value="CST">CST (Central Standard Time)</option>
+                        <option value="MST">MST (Mountain Standard Time)</option>
+                        <option value="GMT">GMT (Greenwich Mean Time)</option>
+                        <option value="CET">CET (Central European Time)</option>
+                        <option value="EET">EET (Eastern European Time)</option>
+                        <option value="AEST">AEST (Australian Eastern Standard Time)</option>
+                        <option value="IST">IST (Indian Standard Time)</option>
+                        <option value="JST">JST (Japan Standard Time)</option>
+                    </select>
+                    <div class="time-display" id="to-time-display">7:00 AM</div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="convert-btn">Convert Time</button>
+                <button class="btn btn-secondary" id="reset-btn">Reset</button>
+            </div>
+
+            <div class="popular-zones">
+                <h3>Popular Time Zones</h3>
+                <div class="zone-buttons">
+                    <div class="zone-btn" data-zone="EST">New York (EST)</div>
+                    <div class="zone-btn" data-zone="PST">Los Angeles (PST)</div>
+                    <div class="zone-btn" data-zone="GMT">London (GMT)</div>
+                    <div class="zone-btn" data-zone="CET">Paris (CET)</div>
+                    <div class="zone-btn" data-zone="IST">India (IST)</div>
+                    <div class="zone-btn" data-zone="CST">Beijing (CST)</div>
+                    <div class="zone-btn" data-zone="JST">Tokyo (JST)</div>
+                    <div class="zone-btn" data-zone="AEST">Sydney (AEST)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Privacy Policy Section -->
+        <div id="privacy" class="page-content">
+            <h2 class="page-title">Privacy Policy</h2>
+            
+            <div class="page-section">
+                <h3>Introduction</h3>
+                <p>Welcome to our Privacy Policy page. This policy describes how we collect, use, and share your personal information when you use our time zone converter tool and other services.</p>
+            </div>
+            
+            <div class="page-section">
+                <h3>Information We Collect</h3>
+                <p>We may collect information about you in a variety of ways. The information we may collect includes:</p>
+                <ul>
+                    <li>Personal Data: Personally identifiable information, such as your name and email address, that you voluntarily give to us when you contact us.</li>
+                    <li>Derived Data: Information our servers automatically collect when you access our tool, such as your IP address, browser type, and access times.</li>
+                    <li>Google AdSense: Our site uses Google AdSense which may use cookies to serve ads based on your visit to our site and other sites on the Internet.</li>
+                </ul>
+            </div>
+            
+            <div class="page-section">
+                <h3>How We Use Your Information</h3>
+                <p>We use the information we collect in the following ways:</p>
+                <ul>
+                    <li>To provide and maintain our time zone converter tool</li>
+                    <li>To improve user experience and functionality</li>
+                    <li>To understand how users interact with our tool</li>
+                    <li>To display relevant advertisements through Google AdSense</li>
+                </ul>
+            </div>
+            
+            <div class="page-section">
+                <h3>Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:privacy@multitools.example">privacy@multitools.example</a>.</p>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="page-content">
+            <h2 class="page-title">Contact Us</h2>
+            
+            <div class="page-section">
+                <p>Have questions or feedback about our time zone converter tool? We'd love to hear from you!</p>
+            </div>
+            
+            <form class="contact-form">
+                <div>
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div>
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div>
+                    <input type="text" placeholder="Subject" required>
+                </div>
+                <div>
+                    <textarea placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+            
+            <div class="page-section">
+                <h3>Other Ways to Reach Us</h3>
+                <p>Email: <a href="mailto:support@multitools.example">support@multitools.example</a></p>
+                <p>Twitter: <a href="#">@MultiTools</a></p>
+                <p>Facebook: <a href="#">MultiToolsPage</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>MultiTools</h3>
+                    <p>Your all-in-one solution for everyday tools. Fast, reliable, and completely free to use.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#">Other Tools</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Our Tools</h3>
+                    <ul>
+                        <li><a href="#">Time Zone Converter</a></li>
+                        <li><a href="#">Unit Converter</a></li>
+                        <li><a href="#">Currency Converter</a></li>
+                        <li><a href="#">Calculator</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 MultiTools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const fromTimezone = document.getElementById('from-timezone');
+        const toTimezone = document.getElementById('to-timezone');
+        const fromDatetime = document.getElementById('from-datetime');
+        const fromTimeDisplay = document.getElementById('from-time-display');
+        const toTimeDisplay = document.getElementById('to-time-display');
+        const convertBtn = document.getElementById('convert-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const zoneButtons = document.querySelectorAll('.zone-btn');
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+
+        // Set current datetime as default
+        const now = new Date();
+        const localDateTime = now.toISOString().slice(0, 16);
+        fromDatetime.value = localDateTime;
+        updateDisplay();
+
+        // Mobile menu toggle
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Update time display when input changes
+        fromDatetime.addEventListener('change', updateDisplay);
+        fromTimezone.addEventListener('change', updateDisplay);
+        toTimezone.addEventListener('change', updateDisplay);
+
+        // Convert button click
+        convertBtn.addEventListener('click', updateDisplay);
+
+        // Reset button click
+        resetBtn.addEventListener('click', () => {
+            fromTimezone.value = 'UTC';
+            toTimezone.value = 'EST';
+            fromDatetime.value = localDateTime;
+            updateDisplay();
+        });
+
+        // Popular time zone buttons
+        zoneButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                toTimezone.value = button.getAttribute('data-zone');
+                updateDisplay();
+            });
+        });
+
+        // Time conversion function
+        function updateDisplay() {
+            const fromTime = fromDatetime.value;
+            const fromTz = fromTimezone.value;
+            const toTz = toTimezone.value;
+            
+            if (!fromTime) {
+                alert('Please select a valid date and time');
+                return;
+            }
+            
+            // In a real implementation, you would use a timezone library like moment-timezone
+            // This is a simplified version for demonstration
+            const date = new Date(fromTime);
+            fromTimeDisplay.textContent = formatTime(date, fromTz);
+            
+            // Simulate timezone conversion by adding/subtracting hours
+            // This is a simplified approach - real timezone conversion requires a library
+            const convertedDate = convertTimeZone(date, fromTz, toTz);
+            toTimeDisplay.textContent = formatTime(convertedDate, toTz);
+        }
+
+        // Format time for display
+        function formatTime(date, timezone) {
+            return date.toLocaleTimeString([], { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            }) + ` (${timezone})`;
+        }
+
+        // Simplified timezone conversion (for demonstration only)
+        // In a real application, use a proper timezone library
+        function convertTimeZone(date, fromTz, toTz) {
+            // Timezone offsets in hours (simplified for demo)
+            const offsets = {
+                'UTC': 0,
+                'EST': -5,
+                'PST': -8,
+                'CST': -6,
+                'MST': -7,
+                'GMT': 0,
+                'CET': 1,
+                'EET': 2,
+                'AEST': 10,
+                'IST': 5.5,
+                'JST': 9
+            };
+            
+            const fromOffset = offsets[fromTz] || 0;
+            const toOffset = offsets[toTz] || 0;
+            const offsetDifference = toOffset - fromOffset;
+            
+            const newDate = new Date(date);
+            newDate.setHours(newDate.getHours() + offsetDifference);
+            
+            return newDate;
+        }
+
+        // Initialize display
+        updateDisplay();
+    </script>
+</body>
+</html>
