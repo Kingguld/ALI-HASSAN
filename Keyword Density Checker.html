@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free Keyword Density Checker Tool - Analyze word frequency and percentage in your text. Perfect for SEO optimization.">
+    <title>Keyword Density Checker | Multi-Tool Website</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #7209b7;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --gray-color: #adb5bd;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f5f7ff;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--success-color);
+        }
+
+        .main {
+            padding: 2rem 0;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem;
+        }
+
+        .input-section {
+            margin-bottom: 2rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 1px solid var(--gray-color);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        select, input[type="number"] {
+            padding: 10px;
+            border: 1px solid var(--gray-color);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button i {
+            margin-right: 8px;
+        }
+
+        #reset-btn {
+            background-color: var(--gray-color);
+        }
+
+        #reset-btn:hover {
+            background-color: #6c757d;
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .results-table th, .results-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .results-table th {
+            background-color: #f1f5ff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .results-table th:hover {
+            background-color: #e6ebff;
+        }
+
+        .results-table tr:hover {
+            background-color: #f9fafd;
+        }
+
+        .word-count-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success-color);
+            border-radius: 4px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card p {
+            color: var(--gray-color);
+            font-weight: 500;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--success-color);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 0 0.5rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+
+        /* AdSense placeholder */
+        .ad-container {
+            background-color: #f1f3f9;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 2rem 0;
+            text-align: center;
+            color: var(--gray-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">⚙️</span>
+                    <span>WebMasterTools</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Tools</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="tool-card">
+                <h1>Keyword Density Checker</h1>
+                <p>Analyze your text to find the most frequently used keywords and their density percentages. This helps optimize content for SEO by ensuring proper keyword distribution.</p>
+                
+                <div class="input-section">
+                    <h2>Paste Your Text</h2>
+                    <textarea id="text-input" placeholder="Paste or type your text here..."></textarea>
+                    
+                    <div class="options">
+                        <div class="option-group">
+                            <label for="stopwords">Exclude Common Words</label>
+                            <select id="stopwords">
+                                <option value="none">No exclusions</option>
+                                <option value="common">Common stop words (the, and, is, etc.)</option>
+                                <option value="seo">SEO stop words (prepositions, pronouns, etc.)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label for="min-length">Minimum Word Length</label>
+                            <input type="number" id="min-length" min="1" max="10" value="3">
+                        </div>
+                        
+                        <div class="option-group">
+                            <label for="min-frequency">Minimum Frequency</label>
+                            <input type="number" id="min-frequency" min="1" value="2">
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="case-sensitive">
+                        <label for="case-sensitive">Case-sensitive analysis</label>
+                    </div>
+                    
+                    <div class="buttons">
+                        <button id="analyze-btn">
+                            <i>📊</i> Analyze Text
+                        </button>
+                        <button id="reset-btn">
+                            <i>🔄</i> Reset
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- AdSense placeholder -->
+                <div class="ad-container">
+                    Google AdSense Banner
+                </div>
+                
+                <div class="results-section" id="results-section">
+                    <div class="results-header">
+                        <h2>Analysis Results <span id="total-words" class="word-count-badge">0 words</span></h2>
+                        <button id="export-btn">
+                            <i>📋</i> Export Results
+                        </button>
+                    </div>
+                    
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <h3 id="unique-words">0</h3>
+                            <p>Unique Words</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="keyword-density">0%</h3>
+                            <p>Top Keyword Density</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="avg-density">0%</h3>
+                            <p>Average Density</p>
+                        </div>
+                    </div>
+                    
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="word">Keyword ↑</th>
+                                <th data-sort="frequency">Frequency</th>
+                                <th data-sort="percentage">Percentage</th>
+                                <th>Density</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-body">
+                            <!-- Results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- AdSense placeholder -->
+            <div class="ad-container">
+                Google AdSense Rectangle
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>WebMasterTools</h3>
+                    <p>A collection of free online tools to help developers, SEO specialists, and content creators.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">All Tools</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Popular Tools</h3>
+                    <ul>
+                        <li><a href="#">Word Counter</a></li>
+                        <li><a href="#">Plagiarism Checker</a></li>
+                        <li><a href="#">Grammar Checker</a></li>
+                        <li><a href="#">Backlink Analyzer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 WebMasterTools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInput = document.getElementById('text-input');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const exportBtn = document.getElementById('export-btn');
+            const resultsSection = document.getElementById('results-section');
+            const resultsBody = document.getElementById('results-body');
+            const totalWordsEl = document.getElementById('total-words');
+            const uniqueWordsEl = document.getElementById('unique-words');
+            const keywordDensityEl = document.getElementById('keyword-density');
+            const avgDensityEl = document.getElementById('avg-density');
+            
+            // Common stop words for exclusion
+            const stopWords = {
+                common: ['a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'to', 'of', 'in', 'on', 'at', 'for', 'by', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'up', 'down', 'from', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now'],
+                seo: ['a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'to', 'of', 'in', 'on', 'at', 'for', 'by', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'up', 'down', 'from', 'out', 'off', 'over', 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'can', 'will', 'just', 'should', 'now', 'that', 'this', 'these', 'those', 'I', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your', 'his', 'its', 'our', 'their', 'mine', 'yours', 'hers', 'ours', 'theirs']
+            };
+            
+            // Event listeners
+            analyzeBtn.addEventListener('click', analyzeText);
+            resetBtn.addEventListener('click', resetForm);
+            exportBtn.addEventListener('click', exportResults);
+            
+            // Add sorting functionality to table headers
+            document.querySelectorAll('.results-table th').forEach(header => {
+                header.addEventListener('click', () => {
+                    const sortBy = header.dataset.sort;
+                    const currentOrder = header.dataset.order || 'asc';
+                    const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+                    
+                    // Update all headers
+                    document.querySelectorAll('.results-table th').forEach(h => {
+                        h.dataset.order = '';
+                        h.innerHTML = h.innerHTML.replace(' ↑', '').replace(' ↓', '');
+                    });
+                    
+                    // Set current header
+                    header.dataset.order = newOrder;
+                    header.innerHTML += newOrder === 'asc' ? ' ↑' : ' ↓';
+                    
+                    sortResults(sortBy, newOrder);
+                });
+            });
+            
+            function analyzeText() {
+                const text = textInput.value.trim();
+                if (!text) {
+                    alert('Please enter some text to analyze.');
+                    return;
+                }
+                
+                const stopwordsOption = document.getElementById('stopwords').value;
+                const minLength = parseInt(document.getElementById('min-length').value);
+                const minFrequency = parseInt(document.getElementById('min-frequency').value);
+                const caseSensitive = document.getElementById('case-sensitive').checked;
+                
+                // Process the text
+                const words = processText(text, caseSensitive);
+                const totalWords = words.length;
+                
+                if (totalWords === 0) {
+                    alert('No valid words found in the text.');
+                    return;
+                }
+                
+                // Count word frequencies
+                const wordCounts = {};
+                words.forEach(word => {
+                    if (stopwordsOption !== 'none' && stopWords[stopwordsOption].includes(word.toLowerCase())) {
+                        return; // Skip stop words
+                    }
+                    
+                    if (word.length < minLength) {
+                        return; // Skip words that are too short
+                    }
+                    
+                    wordCounts[word] = (wordCounts[word] || 0) + 1;
+                });
+                
+                // Filter by minimum frequency
+                const filteredWords = {};
+                Object.keys(wordCounts).forEach(word => {
+                    if (wordCounts[word] >= minFrequency) {
+                        filteredWords[word] = wordCounts[word];
+                    }
+                });
+                
+                // Calculate percentages and prepare results
+                const results = Object.keys(filteredWords).map(word => {
+                    const frequency = filteredWords[word];
+                    const percentage = (frequency / totalWords * 100).toFixed(2);
+                    return { word, frequency, percentage };
+                });
+                
+                // Sort by frequency (descending)
+                results.sort((a, b) => b.frequency - a.frequency);
+                
+                // Display results
+                displayResults(results, totalWords);
+            }
+            
+            function processText(text, caseSensitive) {
+                // Clean and split text into words
+                const cleanedText = text.replace(/[^\w\s]/gi, ' '); // Remove punctuation
+                let words = cleanedText.split(/\s+/).filter(word => word.length > 0);
+                
+                // Convert to lowercase if not case sensitive
+                if (!caseSensitive) {
+                    words = words.map(word => word.toLowerCase());
+                }
+                
+                return words;
+            }
+            
+            function displayResults(results, totalWords) {
+                // Update summary
+                totalWordsEl.textContent = `${totalWords} words`;
+                uniqueWordsEl.textContent = results.length;
+                
+                // Calculate densities
+                let topDensity = 0;
+                let totalDensity = 0;
+                
+                results.forEach(result => {
+                    const density = parseFloat(result.percentage);
+                    if (density > topDensity) topDensity = density;
+                    totalDensity += density;
+                });
+                
+                const avgDensity = results.length > 0 ? (totalDensity / results.length).toFixed(2) : 0;
+                
+                keywordDensityEl.textContent = `${topDensity}%`;
+                avgDensityEl.textContent = `${avgDensity}%`;
+                
+                // Populate table
+                resultsBody.innerHTML = '';
+                results.forEach(result => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${result.word}</td>
+                        <td>${result.frequency}</td>
+                        <td>${result.percentage}%</td>
+                        <td>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${result.percentage}%"></div>
+                            </div>
+                        </td>
+                    `;
+                    resultsBody.appendChild(row);
+                });
+                
+                // Show results section
+                resultsSection.style.display = 'block';
+                
+                // Scroll to results
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            function sortResults(sortBy, order) {
+                const rows = Array.from(resultsBody.querySelectorAll('tr'));
+                
+                rows.sort((a, b) => {
+                    let aValue, bValue;
+                    
+                    if (sortBy === 'word') {
+                        aValue = a.cells[0].textContent;
+                        bValue = b.cells[0].textContent;
+                    } else if (sortBy === 'frequency') {
+                        aValue = parseInt(a.cells[1].textContent);
+                        bValue = parseInt(b.cells[1].textContent);
+                    } else if (sortBy === 'percentage') {
+                        aValue = parseFloat(a.cells[2].textContent);
+                        bValue = parseFloat(b.cells[2].textContent);
+                    }
+                    
+                    if (order === 'asc') {
+                        return aValue > bValue ? 1 : -1;
+                    } else {
+                        return aValue < bValue ? 1 : -1;
+                    }
+                });
+                
+                // Clear and repopulate table
+                resultsBody.innerHTML = '';
+                rows.forEach(row => resultsBody.appendChild(row));
+            }
+            
+            function resetForm() {
+                textInput.value = '';
+                document.getElementById('stopwords').value = 'none';
+                document.getElementById('min-length').value = 3;
+                document.getElementById('min-frequency').value = 2;
+                document.getElementById('case-sensitive').checked = false;
+                resultsSection.style.display = 'none';
+            }
+            
+            function exportResults() {
+                const rows = Array.from(resultsBody.querySelectorAll('tr'));
+                if (rows.length === 0) {
+                    alert('No results to export.');
+                    return;
+                }
+                
+                let csvContent = "Keyword,Frequency,Percentage\n";
+                
+                rows.forEach(row => {
+                    const keyword = row.cells[0].textContent;
+                    const frequency = row.cells[1].textContent;
+                    const percentage = row.cells[2].textContent;
+                    csvContent += `"${keyword}",${frequency},${percentage}\n`;
+                });
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'keyword_density_analysis.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    </script>
+</body>
+</html>
