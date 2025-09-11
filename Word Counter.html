@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free online word counter tool that counts words, characters, sentences, and paragraphs in your text. Perfect for writers, students, and professionals.">
+    <title>Word Counter Tool | Multi-Tool Website</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+            width: 100%;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .tool-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .input-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .input-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .input-section h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-section h2 i {
+            color: #667eea;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #5a6fd5, #6a4190);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .stats-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .stats-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-section h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-section h2 i {
+            color: #667eea;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: scale(1.03);
+            background: #f0f0f0;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .ad-container {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .ad-container p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .ad-placeholder {
+            background: rgba(255, 255, 255, 0.3);
+            height: 150px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            color: white;
+            margin-top: auto;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 15px;
+        }
+
+        .footer-nav a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-nav a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Word Counter Tool</h1>
+            <p>Instantly count words, characters, sentences, and paragraphs in your text</p>
+        </header>
+
+        <div class="tool-container">
+            <div class="input-section">
+                <h2><i class="fas fa-keyboard"></i> Enter Your Text</h2>
+                <textarea id="text-input" class="text-input" placeholder="Type or paste your text here..."></textarea>
+                <div class="buttons">
+                    <button id="clear-btn" class="btn btn-secondary">
+                        <i class="fas fa-broom"></i> Clear Text
+                    </button>
+                    <button id="paste-btn" class="btn btn-primary">
+                        <i class="fas fa-paste"></i> Paste Text
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h2><i class="fas fa-chart-bar"></i> Text Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div id="word-count" class="stat-value">0</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="char-count" class="stat-value">0</div>
+                        <div class="stat-label">Characters</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="char-no-spaces-count" class="stat-value">0</div>
+                        <div class="stat-label">Characters (no spaces)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="sentence-count" class="stat-value">0</div>
+                        <div class="stat-label">Sentences</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="paragraph-count" class="stat-value">0</div>
+                        <div class="stat-label">Paragraphs</div>
+                    </div>
+                    <div class="stat-box">
+                        <div id="reading-time" class="stat-value">0s</div>
+                        <div class="stat-label">Reading Time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ad-container">
+            <p>Advertisement</p>
+            <div class="ad-placeholder">
+                Google AdSense Banner
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-nav">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="about.html">About</a>
+        </div>
+        <div class="copyright">
+            &copy; 2023 Multi-Tool Website. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInput = document.getElementById('text-input');
+            const clearBtn = document.getElementById('clear-btn');
+            const pasteBtn = document.getElementById('paste-btn');
+            
+            // Stat elements
+            const wordCountEl = document.getElementById('word-count');
+            const charCountEl = document.getElementById('char-count');
+            const charNoSpacesCountEl = document.getElementById('char-no-spaces-count');
+            const sentenceCountEl = document.getElementById('sentence-count');
+            const paragraphCountEl = document.getElementById('paragraph-count');
+            const readingTimeEl = document.getElementById('reading-time');
+            
+            // Initialize stats
+            updateStats();
+            
+            // Event listeners
+            textInput.addEventListener('input', updateStats);
+            
+            clearBtn.addEventListener('click', function() {
+                textInput.value = '';
+                updateStats();
+                textInput.focus();
+            });
+            
+            pasteBtn.addEventListener('click', async function() {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    textInput.value = text;
+                    updateStats();
+                } catch (err) {
+                    alert('Failed to paste text. Please paste using Ctrl+V');
+                }
+            });
+            
+            // Function to update statistics
+            function updateStats() {
+                const text = textInput.value;
+                
+                // Word count (split by spaces and filter out empty strings)
+                const words = text.trim() ? text.trim().split(/\s+/) : [];
+                const wordCount = words.length;
+                
+                // Character count
+                const charCount = text.length;
+                
+                // Character count without spaces
+                const charNoSpacesCount = text.replace(/\s/g, '').length;
+                
+                // Sentence count (split by . ! ?)
+                const sentences = text.trim() ? text.split(/[.!?]+/) : [];
+                const sentenceCount = sentences.filter(s => s.length > 0).length;
+                
+                // Paragraph count (split by empty lines)
+                const paragraphs = text.trim() ? text.split(/\n\s*\n/) : [];
+                const paragraphCount = paragraphs.filter(p => p.length > 0).length;
+                
+                // Reading time (assuming 225 words per minute)
+                const readingTimeMinutes = wordCount / 225;
+                const readingTimeSec = Math.ceil(readingTimeMinutes * 60);
+                
+                // Update DOM
+                wordCountEl.textContent = wordCount;
+                charCountEl.textContent = charCount;
+                charNoSpacesCountEl.textContent = charNoSpacesCount;
+                sentenceCountEl.textContent = sentenceCount;
+                paragraphCountEl.textContent = paragraphCount;
+                readingTimeEl.textContent = readingTimeSec < 60 ? 
+                    `${readingTimeSec}s` : 
+                    `${Math.floor(readingTimeMinutes)}m ${Math.ceil((readingTimeMinutes % 1) * 60)}s`;
+            }
+        });
+    </script>
+</body>
+</html>
