@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Gradient Generator | Multi-Tool Website</title>
+    <meta name="description" content="Create beautiful CSS gradients with our easy-to-use gradient generator tool. Customize colors, direction, and type for perfect gradients.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .tool-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .tool-header {
+            background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .tool-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .tool-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 15px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        select, input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .color-inputs {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .color-input {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .color-input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .gradient-preview {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
+            border: 1px solid #ddd;
+        }
+
+        .css-output {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: monospace;
+            font-size: 1rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn.generate {
+            background: #2ecc71;
+        }
+
+        .btn.generate:hover {
+            background: #27ae60;
+        }
+
+        .btn.clear {
+            background: #e74c3c;
+        }
+
+        .btn.clear:hover {
+            background: #c0392b;
+        }
+
+        .btn.copy {
+            background: #9b59b6;
+        }
+
+        .btn.copy:hover {
+            background: #8e44ad;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .step {
+            display: flex;
+            gap: 15px;
+        }
+
+        .step i {
+            font-size: 1.8rem;
+            color: #3498db;
+        }
+
+        .step-content h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        footer nav a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer nav a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tool-body {
+                padding: 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .color-inputs {
+                flex-direction: column;
+            }
+        }
+
+        .ad-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .ad-placeholder {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 8px;
+            color: #7f8c8d;
+        }
+
+        .color-stop {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .color-stop input[type="color"] {
+            width: 40px;
+            height: 40px;
+            padding: 2px;
+        }
+
+        .color-stop input[type="text"] {
+            flex: 1;
+        }
+
+        .add-color-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .remove-color-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CSS Gradient Generator</h1>
+            <p>Create beautiful CSS gradients with our easy-to-use tool. Customize colors, direction, and type.</p>
+        </header>
+
+        <!-- Upper Ad Slot -->
+        <div class="ad-container">
+            <div class="ad-placeholder">
+                Google AdSense Upper Ad
+            </div>
+        </div>
+
+        <main>
+            <div class="tool-container">
+                <div class="tool-header">
+                    <i class="fas fa-palette"></i> Gradient Generator Tool
+                </div>
+                <div class="tool-body">
+                    <div class="controls-section">
+                        <h3 class="section-title">Gradient Settings</h3>
+                        
+                        <div class="control-group">
+                            <label for="gradientType">Gradient Type</label>
+                            <select id="gradientType">
+                                <option value="linear">Linear Gradient</option>
+                                <option value="radial">Radial Gradient</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group" id="directionGroup">
+                            <label for="gradientDirection">Direction</label>
+                            <select id="gradientDirection">
+                                <option value="to right">To Right</option>
+                                <option value="to left">To Left</option>
+                                <option value="to bottom">To Bottom</option>
+                                <option value="to top">To Top</option>
+                                <option value="to bottom right">To Bottom Right</option>
+                                <option value="to top right">To Top Right</option>
+                                <option value="to bottom left">To Bottom Left</option>
+                                <option value="to top left">To Top Left</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Color Stops</label>
+                            <div id="colorStops">
+                                <div class="color-stop">
+                                    <input type="color" value="#ff9a9e" class="colorPicker">
+                                    <input type="text" value="#ff9a9e" placeholder="HEX color" class="colorInput">
+                                    <button class="remove-color-btn"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="color-stop">
+                                    <input type="color" value="#fad0c4" class="colorPicker">
+                                    <input type="text" value="#fad0c4" placeholder="HEX color" class="colorInput">
+                                    <button class="remove-color-btn"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <button class="add-color-btn" id="addColorBtn"><i class="fas fa-plus"></i> Add Color</button>
+                        </div>
+                        
+                        <div class="actions">
+                            <button class="btn generate" id="generateBtn"><i class="fas fa-sync-alt"></i> Generate Gradient</button>
+                            <button class="btn clear" id="clearBtn"><i class="fas fa-trash"></i> Clear</button>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-section">
+                        <h3 class="section-title">Preview & Code</h3>
+                        
+                        <div class="gradient-preview" id="gradientPreview"></div>
+                        
+                        <div class="control-group">
+                            <label>CSS Code</label>
+                            <div class="css-output" id="cssOutput">
+                                /* Gradient will be generated here */
+                            </div>
+                        </div>
+                        
+                        <div class="actions">
+                            <button class="btn copy" id="copyBtn"><i class="fas fa-copy"></i> Copy CSS Code</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Ad Slot -->
+            <div class="ad-container">
+                <div class="ad-placeholder">
+                    Google AdSense Middle Ad
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3>How to Use the Gradient Generator</h3>
+                <div class="steps">
+                    <div class="step">
+                        <i class="fas fa-sliders-h"></i>
+                        <div class="step-content">
+                            <h4>Customize Settings</h4>
+                            <p>Choose gradient type, direction, and add your preferred colors</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-sync-alt"></i>
+                        <div class="step-content">
+                            <h4>Generate Gradient</h4>
+                            <p>Click the Generate button to create your gradient</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <i class="fas fa-copy"></i>
+                        <div class="step-content">
+                            <h4>Copy Code</h4>
+                            <p>Use the Copy button to easily copy the CSS code to your clipboard</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Lower Ad Slot -->
+        <div class="ad-container">
+            <div class="ad-placeholder">
+                Google AdSense Lower Ad
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2023 Multi-Tool Website. All rights reserved.</p>
+            <nav>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const gradientType = document.getElementById('gradientType');
+            const gradientDirection = document.getElementById('gradientDirection');
+            const directionGroup = document.getElementById('directionGroup');
+            const colorStops = document.getElementById('colorStops');
+            const addColorBtn = document.getElementById('addColorBtn');
+            const generateBtn = document.getElementById('generateBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const gradientPreview = document.getElementById('gradientPreview');
+            const cssOutput = document.getElementById('cssOutput');
+            
+            // Default gradient
+            generateGradient();
+            
+            // Event listeners
+            gradientType.addEventListener('change', toggleDirectionVisibility);
+            addColorBtn.addEventListener('click', addColorStop);
+            generateBtn.addEventListener('click', generateGradient);
+            clearBtn.addEventListener('click', clearAll);
+            copyBtn.addEventListener('click', copyCssToClipboard);
+            
+            // Toggle direction visibility based on gradient type
+            function toggleDirectionVisibility() {
+                if (gradientType.value === 'radial') {
+                    directionGroup.style.display = 'none';
+                } else {
+                    directionGroup.style.display = 'flex';
+                }
+                generateGradient();
+            }
+            
+            // Add color stop
+            function addColorStop() {
+                const colorStop = document.createElement('div');
+                colorStop.className = 'color-stop';
+                colorStop.innerHTML = `
+                    <input type="color" value="#6a11cb" class="colorPicker">
+                    <input type="text" value="#6a11cb" placeholder="HEX color" class="colorInput">
+                    <button class="remove-color-btn"><i class="fas fa-times"></i></button>
+                `;
+                colorStops.appendChild(colorStop);
+                
+                // Add event listeners to new inputs
+                const colorPicker = colorStop.querySelector('.colorPicker');
+                const colorInput = colorStop.querySelector('.colorInput');
+                const removeBtn = colorStop.querySelector('.remove-color-btn');
+                
+                colorPicker.addEventListener('input', function() {
+                    colorInput.value = this.value;
+                    generateGradient();
+                });
+                
+                colorInput.addEventListener('input', function() {
+                    if (isValidHex(this.value)) {
+                        colorPicker.value = normalizeHex(this.value);
+                        generateGradient();
+                    }
+                });
+                
+                removeBtn.addEventListener('click', function() {
+                    if (colorStops.children.length > 2) {
+                        colorStop.remove();
+                        generateGradient();
+                    } else {
+                        alert('You need at least two color stops for a gradient.');
+                    }
+                });
+            }
+            
+            // Generate gradient
+            function generateGradient() {
+                const type = gradientType.value;
+                const direction = gradientDirection.value;
+                const colors = [];
+                
+                // Get all color values
+                const colorPickers = document.querySelectorAll('.colorPicker');
+                colorPickers.forEach(picker => {
+                    colors.push(picker.value);
+                });
+                
+                if (colors.length < 2) {
+                    alert('You need at least two colors for a gradient.');
+                    return;
+                }
+                
+                // Create gradient CSS
+                let gradientCss;
+                if (type === 'linear') {
+                    gradientCss = `linear-gradient(${direction}, ${colors.join(', ')})`;
+                } else {
+                    gradientCss = `radial-gradient(circle, ${colors.join(', ')})`;
+                }
+                
+                // Apply to preview
+                gradientPreview.style.background = gradientCss;
+                
+                // Generate CSS code
+                cssOutput.textContent = `background: ${gradientCss};`;
+            }
+            
+            // Clear all inputs
+            function clearAll() {
+                // Reset to default colors
+                const colorPickers = document.querySelectorAll('.colorPicker');
+                const colorInputs = document.querySelectorAll('.colorInput');
+                
+                colorPickers[0].value = '#ff9a9e';
+                colorInputs[0].value = '#ff9a9e';
+                
+                colorPickers[1].value = '#fad0c4';
+                colorInputs[1].value = '#fad0c4';
+                
+                // Remove extra color stops
+                while (colorStops.children.length > 2) {
+                    colorStops.removeChild(colorStops.lastChild);
+                }
+                
+                // Reset type and direction
+                gradientType.value = 'linear';
+                gradientDirection.value = 'to right';
+                directionGroup.style.display = 'flex';
+                
+                generateGradient();
+            }
+            
+            // Copy CSS to clipboard
+            function copyCssToClipboard() {
+                const cssText = cssOutput.textContent;
+                
+                navigator.clipboard.writeText(cssText).then(() => {
+                    const originalHtml = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalHtml;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy to clipboard. Please try again.');
+                });
+            }
+            
+            // Helper function to validate HEX color
+            function isValidHex(color) {
+                return /^#([0-9A-F]{3}){1,2}$/i.test(color);
+            }
+            
+            // Helper function to normalize HEX color (expand shorthand)
+            function normalizeHex(hex) {
+                if (hex.length === 4) {
+                    hex = hex.replace(/#([0-9A-F])([0-9A-F])([0-9A-F])/i, '#$1$1$2$2$3$3');
+                }
+                return hex;
+            }
+            
+            // Add event listeners to initial color inputs
+            document.querySelectorAll('.colorPicker').forEach(picker => {
+                picker.addEventListener('input', function() {
+                    const correspondingInput = this.parentElement.querySelector('.colorInput');
+                    correspondingInput.value = this.value;
+                    generateGradient();
+                });
+            });
+            
+            document.querySelectorAll('.colorInput').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (isValidHex(this.value)) {
+                        const correspondingPicker = this.parentElement.querySelector('.colorPicker');
+                        correspondingPicker.value = normalizeHex(this.value);
+                        generateGradient();
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-color-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (colorStops.children.length > 2) {
+                        this.parentElement.remove();
+                        generateGradient();
+                    } else {
+                        alert('You need at least two color stops for a gradient.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
