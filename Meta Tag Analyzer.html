@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free Meta Tag Analyzer Tool - Check and analyze website meta tags for SEO optimization. Get suggestions for improvement.">
+    <title>Meta Tag Analyzer | WebMasterTools</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #7209b7;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --gray-color: #adb5bd;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f5f7ff;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--success-color);
+        }
+
+        .main {
+            padding: 2rem 0;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .input-section {
+            margin-bottom: 2rem;
+        }
+
+        .url-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="url"] {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--gray-color);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="url"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button i {
+            margin-right: 8px;
+        }
+
+        #reset-btn {
+            background-color: var(--gray-color);
+        }
+
+        #reset-btn:hover {
+            background-color: #6c757d;
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .result-card h4 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .result-card h4 .status {
+            margin-left: auto;
+            font-size: 0.9rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: var(--success-color);
+            color: white;
+        }
+
+        .result-card h4 .status.warning {
+            background: var(--warning-color);
+        }
+
+        .result-card p {
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .result-card .length {
+            font-weight: 500;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+
+        .suggestions {
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 3px solid var(--success-color);
+        }
+
+        .suggestions.warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .suggestions h5 {
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .suggestions ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        .suggestions li {
+            margin-bottom: 0.3rem;
+        }
+
+        .tag-details {
+            margin-top: 2rem;
+        }
+
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+
+        .tag-name {
+            color: #ff79c6;
+        }
+
+        .attr-name {
+            color: #50fa7b;
+        }
+
+        .attr-value {
+            color: #f1fa8c;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card p {
+            color: var(--gray-color);
+            font-weight: 500;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .loader-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--success-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--success-color);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+        }
+
+        /* AdSense placeholder */
+        .ad-container {
+            background-color: #f1f3f9;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin: 2rem 0;
+            text-align: center;
+            color: var(--gray-color);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 0 0.5rem;
+            }
+            
+            .url-input-container {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">⚙️</span>
+                    <span>WebMasterTools</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Tools</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="tool-card">
+                <h1>Meta Tag Analyzer</h1>
+                <p>Analyze the meta tags of any website to check their SEO optimization. Get detailed insights and suggestions for improvement.</p>
+                
+                <div class="input-section">
+                    <h2>Enter Website URL</h2>
+                    <div class="url-input-container">
+                        <input type="url" id="url-input" placeholder="https://example.com" />
+                        <button id="analyze-btn">
+                            <i>🔍</i> Analyze
+                        </button>
+                    </div>
+                    
+                    <div class="loader" id="loader">
+                        <div class="loader-spinner"></div>
+                        <p>Analyzing website meta tags...</p>
+                    </div>
+                    
+                    <!-- AdSense placeholder -->
+                    <div class="ad-container">
+                        Google AdSense Banner
+                    </div>
+                </div>
+                
+                <div class="results-section" id="results-section">
+                    <div class="results-header">
+                        <h2>Analysis Results for <span id="analyzed-url">example.com</span></h2>
+                        <button id="reset-btn">
+                            <i>🔄</i> Reset
+                        </button>
+                    </div>
+                    
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <h3 id="score">0%</h3>
+                            <p>SEO Score</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="meta-tags-count">0</h3>
+                            <p>Meta Tags Found</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3 id="issues-count">0</h3>
+                            <p>Issues Detected</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Meta Tag Analysis</h3>
+                    <div class="results-grid" id="results-grid">
+                        <!-- Results will be populated here -->
+                    </div>
+                    
+                    <div class="tag-details">
+                        <h3>Raw Meta Tags</h3>
+                        <div class="code-block" id="raw-meta-tags">
+                            <!-- Raw meta tags will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AdSense placeholder -->
+            <div class="ad-container">
+                Google AdSense Rectangle
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>WebMasterTools</h3>
+                    <p>A collection of free online tools to help developers, SEO specialists, and content creators.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">All Tools</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Popular Tools</h3>
+                    <ul>
+                        <li><a href="#">Keyword Density Checker</a></li>
+                        <li><a href="#">Plagiarism Checker</a></li>
+                        <li><a href="#">Grammar Checker</a></li>
+                        <li><a href="#">Backlink Analyzer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 WebMasterTools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlInput = document.getElementById('url-input');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const loader = document.getElementById('loader');
+            const resultsSection = document.getElementById('results-section');
+            const resultsGrid = document.getElementById('results-grid');
+            const analyzedUrlEl = document.getElementById('analyzed-url');
+            const scoreEl = document.getElementById('score');
+            const metaTagsCountEl = document.getElementById('meta-tags-count');
+            const issuesCountEl = document.getElementById('issues-count');
+            const rawMetaTagsEl = document.getElementById('raw-meta-tags');
+            
+            // Event listeners
+            analyzeBtn.addEventListener('click', analyzeUrl);
+            resetBtn.addEventListener('click', resetForm);
+            
+            function analyzeUrl() {
+                const url = urlInput.value.trim();
+                if (!url) {
+                    alert('Please enter a URL to analyze.');
+                    return;
+                }
+                
+                // Validate URL format
+                try {
+                    new URL(url);
+                } catch (e) {
+                    alert('Please enter a valid URL including http:// or https://');
+                    return;
+                }
+                
+                // Show loader
+                loader.style.display = 'block';
+                resultsSection.style.display = 'none';
+                
+                // Use a proxy to avoid CORS issues
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                const targetUrl = url;
+                
+                fetch(proxyUrl + targetUrl)
+                    .then(response => response.text())
+                    .then(html => {
+                        // Hide loader
+                        loader.style.display = 'none';
+                        
+                        // Parse HTML and extract meta tags
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // Extract meta tags
+                        const metaTags = extractMetaTags(doc);
+                        
+                        // Display results
+                        displayResults(metaTags, targetUrl);
+                        
+                        // Show results section
+                        resultsSection.style.display = 'block';
+                    })
+                    .catch(error => {
+                        loader.style.display = 'none';
+                        alert('Error fetching URL: ' + error.message);
+                        console.error('Error:', error);
+                    });
+            }
+            
+            function extractMetaTags(doc) {
+                const metaTags = [];
+                
+                // Get title tag
+                const titleTag = doc.querySelector('title');
+                if (titleTag) {
+                    metaTags.push({
+                        name: 'title',
+                        content: titleTag.textContent,
+                        tag: titleTag.outerHTML
+                    });
+                }
+                
+                // Get all meta tags
+                const metaElements = doc.querySelectorAll('meta');
+                metaElements.forEach(meta => {
+                    const name = meta.getAttribute('name') || meta.getAttribute('property') || meta.getAttribute('charset') || 'unknown';
+                    const content = meta.getAttribute('content') || '';
+                    
+                    metaTags.push({
+                        name: name,
+                        content: content,
+                        tag: meta.outerHTML
+                    });
+                });
+                
+                return metaTags;
+            }
+            
+            function displayResults(metaTags, url) {
+                // Update URL display
+                analyzedUrlEl.textContent = new URL(url).hostname;
+                
+                // Clear previous results
+                resultsGrid.innerHTML = '';
+                
+                // Calculate SEO score and issues
+                let score = 100;
+                let issues = 0;
+                
+                // Check for important meta tags and their quality
+                const importantTags = ['title', 'description', 'keywords', 'viewport', 'charset'];
+                const foundTags = [];
+                
+                metaTags.forEach(tag => {
+                    foundTags.push(tag.name);
+                    
+                    // Create result card
+                    const card = document.createElement('div');
+                    card.className = 'result-card';
+                    
+                    const status = document.createElement('span');
+                    status.className = 'status';
+                    
+                    const suggestions = document.createElement('div');
+                    suggestions.className = 'suggestions';
+                    
+                    // Analyze based on tag type
+                    switch(tag.name) {
+                        case 'title':
+                            status.textContent = 'Good';
+                            if (tag.content.length === 0) {
+                                status.textContent = 'Missing';
+                                status.className = 'status warning';
+                                score -= 15;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Add a title tag to improve SEO</li>
+                                        <li>Keep title between 50-60 characters</li>
+                                        <li>Include primary keywords at the beginning</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            } else if (tag.content.length < 30) {
+                                status.textContent = 'Too Short';
+                                status.className = 'status warning';
+                                score -= 5;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Title is too short (${tag.content.length} characters)</li>
+                                        <li>Aim for 50-60 characters for optimal SEO</li>
+                                        <li>Consider adding more descriptive text</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            } else if (tag.content.length > 60) {
+                                status.textContent = 'Too Long';
+                                status.className = 'status warning';
+                                score -= 5;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Title is too long (${tag.content.length} characters)</li>
+                                        <li>Search engines may truncate titles longer than 60 characters</li>
+                                        <li>Consider shortening to under 60 characters</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            }
+                            
+                            card.innerHTML = `
+                                <h4>Title Tag ${status.outerHTML}</h4>
+                                <p>${tag.content || 'Not found'}</p>
+                                <div class="length">Length: ${tag.content.length} characters</div>
+                            `;
+                            card.appendChild(suggestions);
+                            break;
+                            
+                        case 'description':
+                            status.textContent = 'Good';
+                            if (tag.content.length === 0) {
+                                status.textContent = 'Missing';
+                                status.className = 'status warning';
+                                score -= 10;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Add a meta description to improve click-through rates</li>
+                                        <li>Keep description between 150-160 characters</li>
+                                        <li>Include a call to action and primary keywords</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            } else if (tag.content.length < 120) {
+                                status.textContent = 'Too Short';
+                                status.className = 'status warning';
+                                score -= 3;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Description is too short (${tag.content.length} characters)</li>
+                                        <li>Aim for 150-160 characters for optimal results</li>
+                                        <li>Consider adding more details about your content</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            } else if (tag.content.length > 160) {
+                                status.textContent = 'Too Long';
+                                status.className = 'status warning';
+                                score -= 3;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Description is too long (${tag.content.length} characters)</li>
+                                        <li>Search engines may truncate descriptions longer than 160 characters</li>
+                                        <li>Consider shortening to under 160 characters</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            }
+                            
+                            card.innerHTML = `
+                                <h4>Meta Description ${status.outerHTML}</h4>
+                                <p>${tag.content || 'Not found'}</p>
+                                <div class="length">Length: ${tag.content.length} characters</div>
+                            `;
+                            card.appendChild(suggestions);
+                            break;
+                            
+                        case 'viewport':
+                            status.textContent = 'Good';
+                            if (!tag.content.includes('width=device-width')) {
+                                status.textContent = 'Needs Improvement';
+                                status.className = 'status warning';
+                                score -= 5;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Add "width=device-width" to your viewport meta tag</li>
+                                        <li>Consider adding "initial-scale=1" for better mobile experience</li>
+                                        <li>Example: &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            }
+                            
+                            card.innerHTML = `
+                                <h4>Viewport Meta Tag ${status.outerHTML}</h4>
+                                <p>${tag.content || 'Not found'}</p>
+                            `;
+                            card.appendChild(suggestions);
+                            break;
+                            
+                        case 'charset':
+                            status.textContent = 'Good';
+                            if (!tag.content.toLowerCase().includes('utf-8')) {
+                                status.textContent = 'Needs Improvement';
+                                status.className = 'status warning';
+                                score -= 5;
+                                issues++;
+                                
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Use UTF-8 character encoding for best compatibility</li>
+                                        <li>Example: &lt;meta charset="UTF-8"&gt;</li>
+                                    </ul>
+                                `;
+                                suggestions.className = 'suggestions warning';
+                            }
+                            
+                            card.innerHTML = `
+                                <h4>Charset Meta Tag ${status.outerHTML}</h4>
+                                <p>${tag.content || 'Not found'}</p>
+                            `;
+                            card.appendChild(suggestions);
+                            break;
+                            
+                        default:
+                            if (tag.name !== 'unknown') {
+                                card.innerHTML = `
+                                    <h4>${tag.name} ${status.outerHTML}</h4>
+                                    <p>${tag.content}</p>
+                                `;
+                            }
+                    }
+                    
+                    if (tag.name !== 'unknown') {
+                        resultsGrid.appendChild(card);
+                    }
+                });
+                
+                // Check for missing important tags
+                importantTags.forEach(tag => {
+                    if (!foundTags.includes(tag)) {
+                        issues++;
+                        
+                        const card = document.createElement('div');
+                        card.className = 'result-card';
+                        
+                        const status = document.createElement('span');
+                        status.className = 'status warning';
+                        status.textContent = 'Missing';
+                        
+                        const suggestions = document.createElement('div');
+                        suggestions.className = 'suggestions warning';
+                        
+                        switch(tag) {
+                            case 'title':
+                                score -= 15;
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Add a title tag to improve SEO</li>
+                                        <li>Keep title between 50-60 characters</li>
+                                        <li>Include primary keywords at the beginning</li>
+                                    </ul>
+                                `;
+                                break;
+                                
+                            case 'description':
+                                score -= 10;
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Add a meta description to improve click-through rates</li>
+                                        <li>Keep description between 150-160 characters</li>
+                                        <li>Include a call to action and primary keywords</li>
+                                    </ul>
+                                `;
+                                break;
+                                
+                            case 'keywords':
+                                score -= 5;
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Consider adding meta keywords (though less important today)</li>
+                                        <li>Include relevant keywords separated by commas</li>
+                                        <li>Avoid keyword stuffing</li>
+                                    </ul>
+                                `;
+                                break;
+                                
+                            case 'viewport':
+                                score -= 5;
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Add a viewport meta tag for responsive design</li>
+                                        <li>Example: &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</li>
+                                    </ul>
+                                `;
+                                break;
+                                
+                            case 'charset':
+                                score -= 5;
+                                suggestions.innerHTML = `
+                                    <h5>Suggestions</h5>
+                                    <ul>
+                                        <li>Add charset meta tag for proper character encoding</li>
+                                        <li>Example: &lt;meta charset="UTF-8"&gt;</li>
+                                    </ul>
+                                `;
+                                break;
+                        }
+                        
+                        card.innerHTML = `
+                            <h4>${tag} ${status.outerHTML}</h4>
+                            <p>This meta tag was not found on the page</p>
+                        `;
+                        card.appendChild(suggestions);
+                        resultsGrid.appendChild(card);
+                    }
+                });
+                
+                // Update summary
+                scoreEl.textContent = `${Math.max(0, score)}%`;
+                metaTagsCountEl.textContent = metaTags.length;
+                issuesCountEl.textContent = issues;
+                
+                // Display raw meta tags
+                displayRawMetaTags(metaTags);
+            }
+            
+            function displayRawMetaTags(metaTags) {
+                let html = '';
+                
+                metaTags.forEach(tag => {
+                    if (tag.name === 'title') {
+                        html += `<div><span class="tag-name">&lt;title&gt;</span>${tag.content}<span class="tag-name">&lt;/title&gt;</span></div>`;
+                    } else {
+                        // Simple formatting for meta tags
+                        const formattedTag = tag.tag
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/(name|content|property|charset)=/g, '<span class="attr-name">$1</span>=')
+                            .replace(/("([^"]*)")/g, '<span class="attr-value">$1</span>');
+                        
+                        html += `<div>${formattedTag}</div>`;
+                    }
+                });
+                
+                rawMetaTagsEl.innerHTML = html;
+            }
+            
+            function resetForm() {
+                urlInput.value = '';
+                resultsSection.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
